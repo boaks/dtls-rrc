@@ -1016,11 +1016,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DTLS Return Routability Check</td>
-<td class="right">April 2022</td>
+<td class="right">May 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig &amp; Fossati</td>
-<td class="center">Expires 31 October 2022</td>
+<td class="center">Expires 2 November 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1036,12 +1036,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <a href="https://www.rfc-editor.org/rfc/rfc6347" class="eref">6347</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-04-29" class="published">29 April 2022</time>
+<time datetime="2022-05-01" class="published">1 May 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-10-31">31 October 2022</time></dd>
+<dd class="expires"><time datetime="2022-11-02">2 November 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1093,7 +1093,7 @@ protocol versions 1.2 and 1.3.<a href="#section-abstract-1" class="pilcrow">¶</
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 October 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1331,7 +1331,7 @@ likelihood that the attack is unsuccessful.<a href="#section-5-3" class="pilcrow
 <p id="section-5-4"><a href="#fig-off-path" class="xref">Figure 1</a> demonstrates the case where a receiver receives a
 packet with a new source IP address and/or new port number. The
 receiver needs to determine whether this path change is caused
-by an attacker and will send a RRC message of type path_challenge (RRC-1)
+by an attacker and will send a RRC message of type <code>path_challenge</code> (1)
 on the old path.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <span id="name-off-path-packet-forwarding-"></span><div id="fig-off-path">
 <figure id="figure-1">
@@ -1374,12 +1374,11 @@ on the old path.<a href="#section-5-4" class="pilcrow">¶</a></p>
         </figcaption></figure>
 </div>
 <p id="section-5-6">Three cases need to be considered:<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">Case 1: The old path is dead, which leads to a timeout of RRC-1.<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-7">Case 1: The old path is dead, which leads to a timeout of (1).<a href="#section-5-7" class="pilcrow">¶</a></p>
 <p id="section-5-8">As shown in <a href="#fig-old-path-dead" class="xref">Figure 2</a>, a RRC message of type
-path_challenge (RRC-2) needs to be sent on the new path. In this
+<code>path_challenge</code> (2) needs to be sent on the new path. In this
 situation the switch to the new path is considered legitimate.
-The sender will reply with RRC-3 containing a path_response on
-the new path.<a href="#section-5-8" class="pilcrow">¶</a></p>
+The sender will reply with a <code>path_response</code> (3) on the new path.<a href="#section-5-8" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-dead"></span><div id="fig-old-path-dead">
 <figure id="figure-2">
         <div id="section-5-9.1">
@@ -1460,11 +1459,10 @@ the new path.<a href="#section-5-8" class="pilcrow">¶</a></p>
         </figcaption></figure>
 </div>
 <p id="section-5-10">Case 2: The old path is alive but not preferred.<a href="#section-5-10" class="pilcrow">¶</a></p>
-<p id="section-5-11">This case is shown in <a href="#fig-old-path-not-preferred" class="xref">Figure 3</a> whereby the
-sender replies with a RRC-2 path_delete message on the old path.
-This triggers the receiver to send RRC-3 with a path-challenge
-along the new path. The sender will reply with RRC-4 containing
-a path_response along the new path.<a href="#section-5-11" class="pilcrow">¶</a></p>
+<p id="section-5-11">This case is shown in <a href="#fig-old-path-not-preferred" class="xref">Figure 3</a> whereby the sender
+replies with a <code>path_delete</code> message (2) on the old path.  This triggers
+the receiver to send a path-challenge (3) on the new path. The sender
+will reply with a <code>path_response</code> (4) on the new path.<a href="#section-5-11" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-not-preferred"></span><div id="fig-old-path-not-preferred">
 <figure id="figure-3">
         <div id="section-5-12.1">
@@ -1556,7 +1554,7 @@ a path_response along the new path.<a href="#section-5-11" class="pilcrow">¶</a
 </div>
 <p id="section-5-13">Case 3: The old path is alive and preferred.<a href="#section-5-13" class="pilcrow">¶</a></p>
 <p id="section-5-14">This is most likely the result of an attacker. The sender replies
-with RRC-2 containing a path_response along the old path. The
+with a <code>path_response</code> (2) along the old path. The
 interaction is shown in <a href="#fig-old-path-preferred" class="xref">Figure 4</a>. This results
 in the connection being migrated back to the old path.<a href="#section-5-14" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-preferred"></span><div id="fig-old-path-preferred">
@@ -1655,14 +1653,14 @@ address to the anti-amplification limit) and initiate the return routability
 check that proceeds as follows:<a href="#section-6-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6-3">
 <li id="section-6-3.1">The receiver creates a <code>return_routability_check</code> message of
-type path_challenge and places the unpredictable cookie into the message.<a href="#section-6-3.1" class="pilcrow">¶</a>
+type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-6-3.1" class="pilcrow">¶</a>
 </li>
         <li id="section-6-3.2">The message is sent to the observed new address and a timer T (see
 <a href="#timer-choice" class="xref">Section 7.3</a>) is started.<a href="#section-6-3.2" class="pilcrow">¶</a>
 </li>
         <li id="section-6-3.3">The peer endpoint, after successfully verifying the received
 <code>return_routability_check</code> message responds by echoing the cookie value in a
-<code>return_routability_check</code> message of type path_response.<a href="#section-6-3.3" class="pilcrow">¶</a>
+<code>return_routability_check</code> message of type <code>path_response</code>.<a href="#section-6-3.3" class="pilcrow">¶</a>
 </li>
         <li id="section-6-3.4">When the initiator receives and verifies the <code>return_routability_check</code>
 message contains the sent cookie, it updates the peer address binding.<a href="#section-6-3.4" class="pilcrow">¶</a>
@@ -1689,7 +1687,7 @@ address to the anti-amplification limit) and initiate the return routability
 check that proceeds as follows:<a href="#section-7-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-7-3">
 <li id="section-7-3.1">The receiver creates a <code>return_routability_check</code> message of
-type path_challenge and places the unpredictable cookie into the message.<a href="#section-7-3.1" class="pilcrow">¶</a>
+type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7-3.1" class="pilcrow">¶</a>
 </li>
         <li id="section-7-3.2">The message is sent to the previously valid address, which corresponds to the
 old path. Additionally, a timer T, see <a href="#timer-choice" class="xref">Section 7.3</a>, is started.<a href="#section-7-3.2" class="pilcrow">¶</a>
@@ -1700,10 +1698,10 @@ The action to be taken depends on the preference of the path through which
 the message was received:<a href="#section-7-3.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7-3.3.2.1">If the path through which the message was received is preferred,
-a <code>return_routability_check</code> message of type path_response <span class="bcp14">MUST</span> be returned.<a href="#section-7-3.3.2.1" class="pilcrow">¶</a>
+a <code>return_routability_check</code> message of type <code>path_response</code> <span class="bcp14">MUST</span> be returned.<a href="#section-7-3.3.2.1" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7-3.3.2.2">If the path through which the message was received is not preferred,
-a <code>return_routability_check</code> message of type path_delete <span class="bcp14">MUST</span> be returned.
+a <code>return_routability_check</code> message of type <code>path_delete</code> <span class="bcp14">MUST</span> be returned.
 In either case, the peer endpoint echoes the cookie value in the response.<a href="#section-7-3.3.2.2" class="pilcrow">¶</a>
 </li>
           </ul>
@@ -1713,11 +1711,11 @@ In either case, the peer endpoint echoes the cookie value in the response.<a hre
 message contains the previously sent cookie. The actions taken by the
 initiator differ based on the received message:<a href="#section-7-3.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7-3.4.2.1">When a <code>return_routability_check</code> message of type path_response was received,
+<li class="normal" id="section-7-3.4.2.1">When a <code>return_routability_check</code> message of type <code>path_response</code> was received,
 the initiator <span class="bcp14">MUST</span> continue using the previously valid address, i.e. no switch
 to the new path takes place and the peer address binding is not updated.<a href="#section-7-3.4.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7-3.4.2.2">When a <code>return_routability_check</code> message of type path_delete was received,
+            <li class="normal" id="section-7-3.4.2.2">When a <code>return_routability_check</code> message of type <code>path_delete</code> was received,
 the initiator <span class="bcp14">MUST</span> perform a return routability check on the observed new
 address, as described in <a href="#regular" class="xref">Section 6</a>.<a href="#section-7-3.4.2.2" class="pilcrow">¶</a>
 </li>
@@ -1740,16 +1738,16 @@ the initiator and responder roles, broken down per protocol phase.<a href="#sect
 <ul class="normal">
 <li class="normal" id="section-7.1-1.1">
             <p id="section-7.1-1.1.1">The initiator <span class="bcp14">MAY</span> send multiple <code>return_routability_check</code> messages of type
-path_challenge to cater for packet loss on the probed path.<a href="#section-7.1-1.1.1" class="pilcrow">¶</a></p>
+<code>path_challenge</code> to cater for packet loss on the probed path.<a href="#section-7.1-1.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7.1-1.1.2.1">Each path_challenge <span class="bcp14">SHOULD</span> go into different transport packets.  (Note that
+<li class="normal" id="section-7.1-1.1.2.1">Each <code>path_challenge</code> <span class="bcp14">SHOULD</span> go into different transport packets.  (Note that
 the DTLS implementation may not have control over the packetization done by
 the transport layer.)<a href="#section-7.1-1.1.2.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-7.1-1.1.2.2">The transmission of subsequent path_challenge messages <span class="bcp14">SHOULD</span> be paced to
+              <li class="normal" id="section-7.1-1.1.2.2">The transmission of subsequent <code>path_challenge</code> messages <span class="bcp14">SHOULD</span> be paced to
 decrease the chance of loss.<a href="#section-7.1-1.1.2.2" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-7.1-1.1.2.3">Each path_challenge message <span class="bcp14">MUST</span> contain random data.<a href="#section-7.1-1.1.2.3" class="pilcrow">¶</a>
+              <li class="normal" id="section-7.1-1.1.2.3">Each <code>path_challenge</code> message <span class="bcp14">MUST</span> contain random data.<a href="#section-7.1-1.1.2.3" class="pilcrow">¶</a>
 </li>
             </ul>
 </li>
@@ -1767,18 +1765,18 @@ path is still acceptable.<a href="#section-7.1-1.2" class="pilcrow">¶</a>
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-path-response-delete-requir" class="section-name selfRef">Path Response/Delete Requirements</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="section-7.2-1.1">The responder <span class="bcp14">MUST NOT</span> delay sending an elicited path_response or
-path_delete messages.<a href="#section-7.2-1.1" class="pilcrow">¶</a>
+<li class="normal" id="section-7.2-1.1">The responder <span class="bcp14">MUST NOT</span> delay sending an elicited <code>path_response</code> or
+<code>path_delete</code> messages.<a href="#section-7.2-1.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-7.2-1.2">The responder <span class="bcp14">MUST</span> send exactly one path_response or path_delete message
-for each received path_challenge.<a href="#section-7.2-1.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-7.2-1.2">The responder <span class="bcp14">MUST</span> send exactly one <code>path_response</code> or <code>path_delete</code> message
+for each received <code>path_challenge</code>.<a href="#section-7.2-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-7.2-1.3">The responder <span class="bcp14">MUST</span> send the path_response or the  path_delete on the path
-where the corresponding path_challenge has been received, so that validation
+          <li class="normal" id="section-7.2-1.3">The responder <span class="bcp14">MUST</span> send the <code>path_response</code> or the <code>path_delete</code> on the path
+where the corresponding <code>path_challenge</code> has been received, so that validation
 succeeds only if the path is functional in both directions. The initiator
 <span class="bcp14">MUST NOT</span> enforce this behaviour.<a href="#section-7.2-1.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-7.2-1.4">The initiator <span class="bcp14">MUST</span> silently discard any invalid path_response it receives.<a href="#section-7.2-1.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-7.2-1.4">The initiator <span class="bcp14">MUST</span> silently discard any invalid <code>path_response</code> it receives.<a href="#section-7.2-1.4" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-7.2-2">Note that RRC does not cater for PMTU discovery on the reverse path.  If the
