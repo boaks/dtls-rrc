@@ -5,8 +5,8 @@
 TLS                                                   H. Tschofenig, Ed.
 Internet-Draft                                                T. Fossati
 Updates: 6347 (if approved)                                  Arm Limited
-Intended status: Standards Track                              1 May 2022
-Expires: 2 November 2022
+Intended status: Standards Track                              5 May 2022
+Expires: 6 November 2022
 
 
            Return Routability Check for DTLS 1.2 and DTLS 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 November 2022.
+   This Internet-Draft will expire on 6 November 2022.
 
 Copyright Notice
 
@@ -204,7 +204,7 @@ Table of Contents
    An off-path attacker that can observe packets might forward copies of
    genuine packets to endpoints over a different path.  If the copied
    packet arrives before the genuine packet, this will appear as a path
-   change, like in a genuine NAT rebinding occurence.  Any genuine
+   change, like in a genuine NAT rebinding occurrence.  Any genuine
    packet will be discarded as a duplicate.  If the attacker is able to
    continue forwarding packets, it might be able to cause migration to a
    path via the attacker.  This places the attacker on-path, giving it
