@@ -2019,9 +2019,15 @@ Parameters registry <span>[<a href="#IANA.tls-parameters" class="xref">IANA.tls-
             <p id="section-10.3-3.4.1">a brief description of the message<a href="#section-10.3-3.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-10.3-3.5">Reference:</dt>
+<dt id="section-10.3-3.5">DTLS-Only:</dt>
           <dd style="margin-left: 1.5em" id="section-10.3-3.6">
-            <p id="section-10.3-3.6.1">a reference document<a href="#section-10.3-3.6.1" class="pilcrow">¶</a></p>
+            <p id="section-10.3-3.6.1">RRC is only available in DTLS, therefore this column will be set to <code>Y</code> for
+all the entries in this registry<a href="#section-10.3-3.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-10.3-3.7">Reference:</dt>
+          <dd style="margin-left: 1.5em" id="section-10.3-3.8">
+            <p id="section-10.3-3.8.1">a reference document<a href="#section-10.3-3.8.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -2036,6 +2042,7 @@ Parameters registry <span>[<a href="#IANA.tls-parameters" class="xref">IANA.tls-
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Value</th>
               <th class="text-left" rowspan="1" colspan="1">Description</th>
+              <th class="text-left" rowspan="1" colspan="1">DTLS-Only</th>
               <th class="text-left" rowspan="1" colspan="1">Reference</th>
             </tr>
           </thead>
@@ -2043,16 +2050,19 @@ Parameters registry <span>[<a href="#IANA.tls-parameters" class="xref">IANA.tls-
             <tr>
               <td class="text-left" rowspan="1" colspan="1">0</td>
               <td class="text-left" rowspan="1" colspan="1">path_challenge</td>
+              <td class="text-left" rowspan="1" colspan="1">Y</td>
               <td class="text-left" rowspan="1" colspan="1">RFC-THIS</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">1</td>
               <td class="text-left" rowspan="1" colspan="1">path_response</td>
+              <td class="text-left" rowspan="1" colspan="1">Y</td>
               <td class="text-left" rowspan="1" colspan="1">RFC-THIS</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">2</td>
               <td class="text-left" rowspan="1" colspan="1">path_drop</td>
+              <td class="text-left" rowspan="1" colspan="1">Y</td>
               <td class="text-left" rowspan="1" colspan="1">RFC-THIS</td>
             </tr>
           </tbody>
