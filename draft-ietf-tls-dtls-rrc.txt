@@ -5,8 +5,8 @@
 TLS                                                   H. Tschofenig, Ed.
 Internet-Draft                                                T. Fossati
 Updates: 6347 (if approved)                                  Arm Limited
-Intended status: Standards Track                            7 March 2022
-Expires: 8 September 2022
+Intended status: Standards Track                              5 May 2022
+Expires: 6 November 2022
 
 
            Return Routability Check for DTLS 1.2 and DTLS 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 September 2022.
+   This Internet-Draft will expire on 6 November 2022.
 
 Copyright Notice
 
@@ -59,18 +59,6 @@ Copyright Notice
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
-
-   This document may contain material from IETF Documents or IETF
-   Contributions published or made publicly available before November
-   10, 2008.  The person(s) controlling the copyright in some of this
-   material may not have granted the IETF Trust the right to allow
-   modifications of such material outside the IETF Standards Process.
-   Without obtaining an adequate license from the person(s) controlling
-   the copyright in such materials, this document may not be modified
-   outside the IETF Standards Process, and derivative works of it may
-   not be created outside the IETF Standards Process, except to format
-   it for publication as an RFC or to translate it into languages other
-   than English.
 
 Table of Contents
 
@@ -113,19 +101,17 @@ Table of Contents
    A CID is an identifier carried in the record layer header of a DTLS
    datagram that gives the receiver additional information for selecting
    the appropriate security context.  The CID mechanism has been
-   specified in [I-D.ietf-tls-dtls-connection-id] for DTLS 1.2 and in
-   [I-D.ietf-tls-dtls13] for DTLS 1.3.
+   specified in [RFC9146] for DTLS 1.2 and in [RFC9147] for DTLS 1.3.
 
-   Section 6 of [I-D.ietf-tls-dtls-connection-id] describes how the use
-   of CID increases the attack surface by providing both on-path and
-   off-path attackers an opportunity for (D)DoS.  It then goes on
-   describing the steps a DTLS principal must take when a record with a
-   CID is received that has a source address (and/or port) different
-   from the one currently associated with the DTLS connection.  However,
-   the actual mechanism for ensuring that the new peer address is
-   willing to receive and process DTLS records is left open.  This
-   document standardizes a return routability check (RRC) as part of the
-   DTLS protocol itself.
+   Section 6 of [RFC9146] describes how the use of CID increases the
+   attack surface by providing both on-path and off-path attackers an
+   opportunity for (D)DoS.  It then goes on describing the steps a DTLS
+   principal must take when a record with a CID is received that has a
+   source address (and/or port) different from the one currently
+   associated with the DTLS connection.  However, the actual mechanism
+   for ensuring that the new peer address is willing to receive and
+   process DTLS records is left open.  This document standardizes a
+   return routability check (RRC) as part of the DTLS protocol itself.
 
    The return routability check is performed by the receiving peer
    before the CID-to-IP address/port binding is updated in that peer's
@@ -148,9 +134,9 @@ Table of Contents
    capitals, as shown here.
 
    This document assumes familiarity with the CID format and protocol
-   defined for DTLS 1.2 [I-D.ietf-tls-dtls-connection-id] and for DTLS
-   1.3 [I-D.ietf-tls-dtls13].  The presentation language used in this
-   document is described in Section 4 of [RFC8446].
+   defined for DTLS 1.2 [RFC9146] and for DTLS 1.3 [RFC9147].  The
+   presentation language used in this document is described in Section 4
+   of [RFC8446].
 
    This document reuses the definition of "anti-amplification limit"
    from [RFC9000] to mean three times the amount of data received from
@@ -204,7 +190,7 @@ Table of Contents
        select (return_routability_check.msg_type) {
            case path_challenge: Cookie;
            case path_response:  Cookie;
-           case path_delete:  Cookie;
+           case path_delete:    Cookie;
        };
    } return_routability_check;
 
@@ -216,146 +202,148 @@ Table of Contents
 5.  Off-Path Packet Forwarding
 
    An off-path attacker that can observe packets might forward copies of
-   genuine packets to endpoints.  If the copied packet arrives before
-   the genuine packet, this will appear as a NAT rebinding.  Any genuine
+   genuine packets to endpoints over a different path.  If the copied
+   packet arrives before the genuine packet, this will appear as a path
+   change, like in a genuine NAT rebinding occurrence.  Any genuine
    packet will be discarded as a duplicate.  If the attacker is able to
    continue forwarding packets, it might be able to cause migration to a
    path via the attacker.  This places the attacker on-path, giving it
    the ability to observe or drop all subsequent packets.
 
-   This style of attack relies on the attacker using a path that has
-   approximately the same characteristics as the direct path between
-   endpoints.  The attack is more reliable if relatively few packets are
-   sent or if packet loss coincides with the attempted attack.
+   This style of attack relies on the attacker using a path that has the
+   same or better characteristics (e.g., due to a more favourable
+   service level agreements) as the direct path between endpoints.  The
+   attack is more reliable if relatively few packets are sent or if
+   packet loss coincides with the attempted attack.
 
    A data packet received on the original path that increases the
    maximum received packet number will cause the endpoint to move back
-   to that path.  Eliciting packets on this path increases the
-   likelihood that the attack is unsuccessful.
+   to that path.  Therefore, eliciting packets on this path increases
+   the likelihood that the attack is unsuccessful.  Note however that,
+   unlike QUIC, DTLS has no "non-probing" packets so this would require
+   application specific mechanisms.
 
-   Figure 1 demonstrates the case where a receiver receives a packet
-   with a new source IP address and/or new port number.  The receiver
-   needs to determine whether this path change is caused by an attacker
-   and will send a RRC message of type path_challenge (RRC-1) on the old
-   path.
+   Figure 1 illustrates the case where a receiver receives a packet with
+   a new source IP address and/or new port number.  In order to
+   determine whether this path change was not triggered by an off-path
+   attacker, the receiver will send a RRC message of type path_challenge
+   (1) on the old path.
 
-           new   +--------+  old
-           path  |        |  path
-          +----->|Receiver|<-----+
-          |      |        |      |
-          |      +--------+      |
-          |                      |
-          |                      |
-          |                      |
-          |                      |
-          |                      |
-    +----------+                 |
-    | Attacker?|                 |
-    +----------+                 |
-          |                      |
-          |                      |
-          |                      |
-          |      +--------+      |
-          |      |        |      |
-          +------| Sender |------+
-                 |        |
-                 +--------+
+                             new                  old
+                             path  .----------.  path
+                                   |          |
+                             .-----+ Receiver +-----.
+                             |     |          |     |
+                             |     '----------'     |
+                             |                      |
+                             |                      |
+                             |                      |
+                        .----+------.               |
+                       / Attacker? /                |
+                      '------+----'                 |
+                             |                      |
+                             |                      |
+                             |                      |
+                             |     .----------.     |
+                             |     |          |     |
+                             '-----+  Sender  +-----'
+                                   |          |
+                                   '----------'
 
                Figure 1: Off-Path Packet Forwarding Scenario
 
    Three cases need to be considered:
 
-   Case 1: The old path is dead, which leads to a timeout of RRC-1.
+   Case 1: The old path is dead (e.g., due to a NAT rebinding), which
+   leads to a timeout of (1).
 
-   As shown in Figure 2, a RRC message of type path_challenge (RRC-2)
-   needs to be sent on the new path.  In this situation the switch to
-   the new path is considered legitimate.  The sender will reply with
-   RRC-3 containing a path_response on the new path.
+   As shown in Figure 2, a path_challenge (2) needs to be sent on the
+   new path.  If the sender replies with a path_response on the new path
+   (3), the switch to the new path is considered legitimate.
 
-      ...................>+--------+
-      .           ********|        |********
-      .           *+----->|Receiver|<-----+*
-      .           *| new  |        | old  |*
-      .     RRC-2 *| path +--------+ path |* RRC-1
-      .      with *|                      |* with
-      .     path- *|                      |* path-
-      . challenge *|                      |* challenge
-      .           *|                      |*
-      .           *|                      |*
-      .      +----------+                 |*
-      .      | Attacker |                 |*
-      .      +----------+                 |*
-      .           *|                      |v
-      .           *|                      |timeout
-      .           *|                      |
-      .RRC-3      *|      +--------+      |
-      .with       *|      |        |      |
-      .path-      *+------| Sender |------+
-      .response   *******>|        |
-      ....................+--------+
+                       new                      old
+                       path    .----------.    path
+                       .------>|          +-------.
+                       | .-----+ Receiver +...... |
+                       | | .---+          |     . |
+                       | | |   '----------'     . |
+              path-    3 | |                    . 1 path-
+              response | | |                    . | challenge
+                       | | |                    . |
+                    .--|-+-|----------------------v--.
+                   /   |   |       NAT            X / timeout
+                  '----|-+-|-----------------------'
+                       | | |                    .
+                       | | 2 path-              .
+                       | | | challenge          .
+                       | | |   .----------.     .
+                       | | '-->|          |     .
+                       | '-----+  Sender  +.....'
+                       '-------+          |
+                               '----------'
 
                          Figure 2: Old path is dead
 
    Case 2: The old path is alive but not preferred.
 
    This case is shown in Figure 3 whereby the sender replies with a
-   RRC-2 path_delete message on the old path.  This triggers the
-   receiver to send RRC-3 with a path-challenge along the new path.  The
-   sender will reply with RRC-4 containing a path_response along the new
-   path.
+   path_delete message (2) on the old path.  This triggers the receiver
+   to send a path_challenge (3) on the new path.  The sender will reply
+   with a path_response (4) on the new path, thus providing confirmation
+   for the path migration.
 
-     ...................>+--------+<....................
-     .           ********|        |********            .
-     .           *+----->|Receiver|<-----+*            .
-     .           *| new  |        | old  |*            .
-     .     RRC-3 *| path +--------+ path |* RRC-1      .
-     .      with *|                      |* with       .
-     .     path- *|                      |* path-      .
-     . challenge *|                      |* challenge  .
-     .           *|                      |*            .
-     .           *|                      |*            .
-     .      +----------+                 |*            .
-     .      | Attacker |                 |*            .
-     .      +----------+                 |*            .
-     .           *|                      |*            .
-     .           *|                      |*            .
-     .           *|                      |*            .
-     .RRC-4      *|      +--------+      |*       RRC-2.
-     .with       *|      |        |      |*        with.
-     .path-      *+------| Sender |------+*       path-.
-     .response   *******>|        |<*******      delete.
-     ....................+--------+.....................
+                       new                      old
+                       path    .----------.    path
+                       .------>|          |<------.
+                       | .-----+ Receiver +-----. |
+                       | | .---+          +---. | |
+                       | | |   '----------'   | | |
+              path-    4 | |        path-     1 | |
+              response | | |        challenge | | |
+                       | | |                  | | |
+             .---------|-+-|----.          .--|-+-|-----------.
+            / AP/NAT A |   |   /          /   |   | AP/NAT B /
+           '-----------|---|--'          '----|-+-|---------'
+                       | | |                  | | |
+                       | | 3 path-            | | 2 path-
+                       | | | challenge        | | | delete
+                       | | |   .----------.   | | |
+                       | | '-->|          |<--' | |
+                       | '-----+  Sender  +-----' |
+                       '-------+          |<------'
+                               '----------'
 
                     Figure 3: Old path is not preferred
 
    Case 3: The old path is alive and preferred.
 
-   This is most likely the result of an attacker.  The sender replies
-   with RRC-2 containing a path_response along the old path.  The
-   interaction is shown in Figure 4.  This results in the connection
-   being migrated back to the old path.
+   This is most likely the result of an off-path attacker trying to
+   place itself on path.  The receiver sends a path_challenge on the old
+   path and the sender replies with a path_response (2) on the old path.
+   The interaction is shown in Figure 4.  This results in the connection
+   not being migrated to the new path, thus thwarting the attack.
 
-                  +--------+<....................
-                  |        |********            .
-           +----->|Receiver|<-----+*            .
-           | new  |        | old  |*            .
-           | path +--------+ path |* RRC-1      .
-           |                      |* with       .
-           |                      |* path-      .
-           |                      |* challenge  .
-           |                      |*            .
-           |                      |*            .
-     +----------+                 |*            .
-     | Attacker |                 |*            .
-     +----------+                 |*            .
-           |                      |*            .
-           |                      |*            .
-           |                      |*            .
-           |      +--------+      |*       RRC-2.
-           |      |        |      |*        with.
-           +------| Sender |------+*       path-.
-                  |        |<*******    response.
-                  +--------+.....................
+                       new                    old
+                       path  .----------.    path
+                             |          +-------.
+                       .-----+ Receiver +-----. |
+                       |     |          |<--. | |
+                       |     '----------'   | | |
+                       |                    | | 1 path-
+                       |                    | | | challenge
+                       |                    | | |
+                   .---+------.          .--|-+-|-----.
+                  / off-path /          / AP| / |NAT /
+                 / attacker /          '----|-+-|---'
+                '------+---'                | | |
+                       |                    | | |
+                       |           path-    2 | |
+                       |           response | | |
+                       |     .----------.   | | |
+                       |     |          +---' | |
+                       '-----+  Sender  +-----' |
+                             |          |<------'
+                             '----------'
 
                       Figure 4: Old path is preferred
 
@@ -370,9 +358,9 @@ Table of Contents
    packets were recently received on the old path; similarly, rebinding
    is rare on IPv6 paths.  Endpoints can also look for duplicated
    packets.  Conversely, a change in connection ID is more likely to
-   indicate an intentional migration rather than an attack.  Note,
-   however, changes in connection IDs are only supported in DTLS 1.3 but
-   not in DTLS 1.2.
+   indicate an intentional migration rather than an attack.  Note that
+   changes in connection IDs are supported in DTLS 1.3 but not in DTLS
+   1.2.
 
 6.  Path Validation Procedure
 
@@ -663,21 +651,6 @@ Auth | {CertificateVerify}
 
 13.1.  Normative References
 
-   [I-D.ietf-tls-dtls-connection-id]
-              Rescorla, E., Tschofenig, H., Fossati, T., and A. Kraus,
-              "Connection Identifiers for DTLS 1.2", Work in Progress,
-              Internet-Draft, draft-ietf-tls-dtls-connection-id-13, 22
-              June 2021, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-tls-dtls-connection-id-13>.
-
-   [I-D.ietf-tls-dtls13]
-              Rescorla, E., Tschofenig, H., and N. Modadugu, "The
-              Datagram Transport Layer Security (DTLS) Protocol Version
-              1.3", Work in Progress, Internet-Draft, draft-ietf-tls-
-              dtls13-43, 30 April 2021,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              dtls13-43>.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -690,6 +663,16 @@ Auth | {CertificateVerify}
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [RFC9146]  Rescorla, E., Ed., Tschofenig, H., Ed., Fossati, T., and
+              A. Kraus, "Connection Identifier for DTLS 1.2", RFC 9146,
+              DOI 10.17487/RFC9146, March 2022,
+              <https://www.rfc-editor.org/rfc/rfc9146>.
+
+   [RFC9147]  Rescorla, E., Tschofenig, H., and N. Modadugu, "The
+              Datagram Transport Layer Security (DTLS) Protocol Version
+              1.3", RFC 9147, DOI 10.17487/RFC9147, April 2022,
+              <https://www.rfc-editor.org/rfc/rfc9147>.
 
 13.2.  Informative References
 
