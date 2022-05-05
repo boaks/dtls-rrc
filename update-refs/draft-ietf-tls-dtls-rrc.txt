@@ -211,10 +211,10 @@ Table of Contents
    the ability to observe or drop all subsequent packets.
 
    This style of attack relies on the attacker using a path that has the
-   same or better (e.g., due to a more favourable SLA) characteristics
-   as the direct path between endpoints.  The attack is more reliable if
-   relatively few packets are sent or if packet loss coincides with the
-   attempted attack.
+   same or better characteristics (e.g., due to a more favourable
+   service level agreements) as the direct path between endpoints.  The
+   attack is more reliable if relatively few packets are sent or if
+   packet loss coincides with the attempted attack.
 
    A data packet received on the original path that increases the
    maximum received packet number will cause the endpoint to move back
