@@ -67,7 +67,8 @@ Table of Contents
    3.  RRC Extension
    4.  Return Routability Check Message Types
    5.  RRC and CID Interplay
-   6.  Off-Path Packet Forwarding
+   6.  Attacker Model
+     6.1.  Off-Path Packet Forwarding
    7.  Path Validation Procedure
      7.1.  Basic
      7.2.  Enhanced
@@ -222,7 +223,14 @@ Table of Contents
    with that CID value, the receiver SHOULD perform a return routability
    check as described in Section 7.
 
-6.  Off-Path Packet Forwarding
+6.  Attacker Model
+
+   RRC is not designed to counter on-path attackers.  These can never be
+   distinguished from, for example, a genuine network device.  However,
+   RRC can withstand off-path attackers of the type described below when
+   the enhanced path validation algorithm (Section 7.2) is used.
+
+6.1.  Off-Path Packet Forwarding
 
    An off-path attacker that can observe packets might forward copies of
    genuine packets to endpoints over a different path.  If the copied
@@ -389,7 +397,7 @@ Table of Contents
 
 7.1.  Basic
 
-   Note: This algorithm does not take the Section 6 scenario into
+   Note: This algorithm does not take the Section 6.1 scenario into
    account.
 
    The receiver that observes the peer's address or port update MUST
@@ -419,12 +427,13 @@ Table of Contents
    After this point, any pending send operation is resumed to the bound
    peer address.
 
-   Section 7.3 and Section 7.4 contain the requirements for the
-   initiator and responder roles, broken down per protocol phase.
+   Section 7.3 and Section 7.4 list the requirements for the initiator
+   and responder roles, broken down per protocol phase.
 
 7.2.  Enhanced
 
-   Note: This algorithm also takes the Section 6 scenario into account.
+   Note: This algorithm also takes the Section 6.1 scenario into
+   account.
 
    The receiver that observes the peer's address or port update MUST
    stop sending any buffered application data (or limit the data sent to
@@ -475,8 +484,8 @@ Table of Contents
    After the path validation procedure is completed, any pending send
    operation is resumed to the bound peer address.
 
-   Section 7.3 and Section 7.4 contain the requirements for the
-   initiator and responder roles, broken down per protocol phase.
+   Section 7.3 and Section 7.4 list the requirements for the initiator
+   and responder roles, broken down per protocol phase.
 
 7.3.   Path Challenge Requirements
 
