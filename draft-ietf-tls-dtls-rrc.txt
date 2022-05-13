@@ -75,6 +75,9 @@ Table of Contents
    8.  Example
    9.  Security and Privacy Considerations
    10. IANA Considerations
+     10.1.  New TLS ContentType
+     10.2.   New TLS ExtensionType
+     10.3.  New RRC Message Type Sub-registry
    11. Open Issues
    12. Acknowledgments
    13. References
@@ -617,24 +620,70 @@ Auth | {CertificateVerify}
 
 10.  IANA Considerations
 
+
+   // RFC Editor: please replace RFCthis with this RFC number and remove
+   // this note.
+
+10.1.  New TLS ContentType
+
    IANA is requested to allocate an entry to the TLS ContentType
    registry, for the return_routability_check(TBD2) message defined in
    this document.  The return_routability_check content type is only
    applicable to DTLS 1.2 and 1.3.
 
+10.2.   New TLS ExtensionType
+
    IANA is requested to allocate the extension code point (TBD1) for the
    rrc extension to the TLS ExtensionType Values registry as described
    in Table 1.
 
-     +=======+===========+=====+===========+=============+===========+
-     | Value | Extension | TLS | DTLS-Only | Recommended | Reference |
-     |       | Name      | 1.3 |           |             |           |
-     +=======+===========+=====+===========+=============+===========+
-     | TBD1  | rrc       | CH, | Y         | N           | RFC-THIS  |
-     |       |           | SH  |           |             |           |
-     +-------+-----------+-----+-----------+-------------+-----------+
+   +=======+===========+=====+===========+=============+===========+
+   | Value | Extension | TLS | DTLS-Only | Recommended | Reference |
+   |       | Name      | 1.3 |           |             |           |
+   +=======+===========+=====+===========+=============+===========+
+   | TBD1  | rrc       | CH, | Y         | N           | RFCthis   |
+   |       |           | SH  |           |             |           |
+   +-------+-----------+-----+-----------+-------------+-----------+
 
-        Table 1: rrc entry in the TLS ExtensionType Values registry
+      Table 1: rrc entry in the TLS ExtensionType Values registry
+
+10.3.  New RRC Message Type Sub-registry
+
+   IANA is requested to create a new sub-registry for RRC Message Types
+   in the TLS Parameters registry [IANA.tls-parameters], with the policy
+   "expert review" [RFC8126].
+
+   Each entry in the registry must include:
+
+   Value:
+      A number in the range from 0 to 255 (decimal)
+
+   Description:
+      a brief description of the message
+
+   DTLS-Only:
+      RRC is only available in DTLS, therefore this column will be set
+      to Y for all the entries in this registry
+
+   Reference:
+      a reference document
+
+   The initial state of this sub-registry is as follows:
+
+   +=======+================+===========+===========+
+   | Value | Description    | DTLS-Only | Reference |
+   +=======+================+===========+===========+
+   | 0     | path_challenge | Y         | RFCthis   |
+   +-------+----------------+-----------+-----------+
+   | 1     | path_response  | Y         | RFCthis   |
+   +-------+----------------+-----------+-----------+
+   | 2     | path_drop      | Y         | RFCthis   |
+   +-------+----------------+-----------+-----------+
+   | 3-255 | Unassigned     |           |           |
+   +-------+----------------+-----------+-----------+
+
+      Table 2: Initial Entries in RRC Message Type
+                        registry
 
 11.  Open Issues
 
@@ -651,10 +700,19 @@ Auth | {CertificateVerify}
 
 13.1.  Normative References
 
+   [IANA.tls-parameters]
+              IANA, "Transport Layer Security (TLS) Parameters",
+              <https://www.iana.org/assignments/tls-parameters>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/rfc/rfc8126>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
