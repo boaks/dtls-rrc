@@ -1132,25 +1132,31 @@ protocol versions 1.2 and 1.3.<a href="#section-abstract-1" class="pilcrow">¶</
             <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-rrc-extension" class="xref">RRC Extension</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-the-return-routability-chec" class="xref">The Return Routability Check Message</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-return-routability-check-me" class="xref">Return Routability Check Message Types</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-off-path-packet-forwarding" class="xref">Off-Path Packet Forwarding</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-rrc-and-cid-interplay" class="xref">RRC and CID Interplay</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-path-validation-procedure" class="xref">Path Validation Procedure</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-off-path-packet-forwarding" class="xref">Off-Path Packet Forwarding</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-enhanced-path-validation-pr" class="xref">Enhanced Path Validation Procedure</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-path-validation-procedure" class="xref">Path Validation Procedure</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-path-challenge-requirements" class="xref">Path Challenge Requirements</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-basic" class="xref">Basic</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-path-response-drop-requirem" class="xref">Path Response/Drop Requirements</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-enhanced" class="xref">Enhanced</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-timer-choice" class="xref">Timer Choice</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-path-challenge-requirements" class="xref">Path Challenge Requirements</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-path-response-drop-requirem" class="xref">Path Response/Drop Requirements</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="xref">7.5</a>.  <a href="#name-timer-choice" class="xref">Timer Choice</a></p>
 </li>
             </ul>
 </li>
@@ -1272,18 +1278,23 @@ exchanged <code>rrc</code> extensions.<a href="#section-3-1" class="pilcrow">¶<
 <p id="section-3-2">Note that the RRC extension applies to both DTLS 1.2 and DTLS 1.3.<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="the-return-routability-check-message">
+<div id="return-routability-check-message-types">
 <section id="section-4">
-      <h2 id="name-the-return-routability-chec">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-return-routability-chec" class="section-name selfRef">The Return Routability Check Message</a>
+      <h2 id="name-return-routability-check-me">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-return-routability-check-me" class="section-name selfRef">Return Routability Check Message Types</a>
       </h2>
-<p id="section-4-1">When a record with CID is received that has the source address of the enclosing
-UDP datagram different from the one previously associated with that CID, the
-receiver <span class="bcp14">MUST NOT</span> update its view of the peer's IP address and port number with
-the source specified in the UDP datagram before cryptographically validating
-the enclosed record(s) but instead perform a return routability check.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4-2">
-<pre>
+<p id="section-4-1">This document defines the <code>return_routability_check</code> content type
+(<a href="#fig-rrc-msg" class="xref">Figure 1</a>) to carry Return Routability Check protocol messages.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">The protocol consists of three message types: <code>path_challenge</code>, <code>path_response</code>
+and <code>path_drop</code> that are used for path validation and selection as described in
+<a href="#path-validation" class="xref">Section 7</a>.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Each message carries a Cookie, a 8-byte field containing arbitrary data.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">The <code>return_routability_check</code> message <span class="bcp14">MUST</span> be authenticated and encrypted
+using the currently active security context.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<span id="name-return-routability-check-mes"></span><div id="fig-rrc-msg">
+<figure id="figure-1">
+        <div id="section-4-5.1">
+<pre class="lang-tls-msg sourcecode">
 enum {
     invalid(0),
     change_cipher_spec(20),
@@ -1301,7 +1312,7 @@ enum {
     path_challenge(0),
     path_response(1),
     path_drop(2),
-    reserved(3..255)
+    (255)
 } rrc_msg_type;
 
 struct {
@@ -1312,44 +1323,61 @@ struct {
         case path_drop:      Cookie;
     };
 } return_routability_check;
-</pre><a href="#section-4-2" class="pilcrow">¶</a>
+</pre>
 </div>
-<p id="section-4-3">The cookie is a 8-byte field containing arbitrary data.<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">The <code>return_routability_check</code> message <span class="bcp14">MUST</span> be authenticated and encrypted using
-the currently active security context.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-return-routability-check-mes" class="selfRef">Return Routability Check Message</a>
+        </figcaption></figure>
+</div>
+<p id="section-4-6">Future extensions or additions to the Return Routability Check protocol may
+define new message types.  Implementations <span class="bcp14">MUST</span> be able to parse and ignore
+unknown values.<a href="#section-4-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="rrc-and-cid-interplay">
+<section id="section-5">
+      <h2 id="name-rrc-and-cid-interplay">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-rrc-and-cid-interplay" class="section-name selfRef">RRC and CID Interplay</a>
+      </h2>
+<p id="section-5-1">RRC offers an in-protocol mechanism to perform peer address validation, thus
+complementing the "peer address update" procedure described in <span><a href="https://rfc-editor.org/rfc/rfc9146#section-6" class="relref">Section 6</a> of [<a href="#RFC9146" class="xref">RFC9146</a>]</span>.  Specifically, when both CID <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span> and RRC have been
+successfully negotiated for the session, if a record with CID is received that
+has the source address of the enclosing UDP datagram different from the one
+previously associated with that CID value, the receiver <span class="bcp14">SHOULD</span> perform a return
+routability check as described in <a href="#path-validation" class="xref">Section 7</a>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="off-path">
-<section id="section-5">
+<section id="section-6">
       <h2 id="name-off-path-packet-forwarding">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-off-path-packet-forwarding" class="section-name selfRef">Off-Path Packet Forwarding</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-off-path-packet-forwarding" class="section-name selfRef">Off-Path Packet Forwarding</a>
       </h2>
-<p id="section-5-1">An off-path attacker that can observe packets might forward copies of
+<p id="section-6-1">An off-path attacker that can observe packets might forward copies of
 genuine packets to endpoints over a different path. If the copied packet arrives before
 the genuine packet, this will appear as a path change, like in a genuine NAT rebinding occurrence. Any genuine
 packet will be discarded as a duplicate. If the attacker is able to
 continue forwarding packets, it might be able to cause migration to a
 path via the attacker. This places the attacker on-path, giving it
-the ability to observe or drop all subsequent packets.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">This style of attack relies on the attacker using a path that has
+the ability to observe or drop all subsequent packets.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">This style of attack relies on the attacker using a path that has
 the same or better characteristics (e.g., due to a more favourable service level agreements) as the direct path between
 endpoints. The attack is more reliable if relatively few packets are
-sent or if packet loss coincides with the attempted attack.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">A data packet received on the original path that increases the
+sent or if packet loss coincides with the attempted attack.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">A data packet received on the original path that increases the
 maximum received packet number will cause the endpoint to move back
 to that path. Therefore, eliciting packets on this path increases the
 likelihood that the attack is unsuccessful. Note however that, unlike QUIC,
 DTLS has no "non-probing" packets so this would require application specific
-mechanisms.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4"><a href="#fig-off-path" class="xref">Figure 1</a> illustrates the case where a receiver receives a
+mechanisms.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4"><a href="#fig-off-path" class="xref">Figure 2</a> illustrates the case where a receiver receives a
 packet with a new source IP address and/or new port number. In order
 to determine whether this path change was not triggered
 by an off-path attacker, the receiver will send a RRC message of type
-<code>path_challenge</code> (1) on the old path.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<code>path_challenge</code> (1) on the old path.<a href="#section-6-4" class="pilcrow">¶</a></p>
 <span id="name-off-path-packet-forwarding-"></span><div id="fig-off-path">
-<figure id="figure-1">
-        <div id="section-5-5.1">
-          <div class="alignCenter art-svg artwork" id="section-5-5.1.1">
+<figure id="figure-2">
+        <div id="section-6-5.1">
+          <div class="alignCenter art-svg artwork" id="section-6-5.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="368" width="256" viewBox="0 0 256 368" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 64,80 L 64,176" fill="none" stroke="black"></path>
               <path d="M 64,208 L 64,304" fill="none" stroke="black"></path>
@@ -1379,23 +1407,23 @@ by an off-path attacker, the receiver will send a RRC message of type
                 <text x="64" y="196">Attacker?</text>
                 <text x="156" y="308">Sender</text>
               </g>
-            </svg><a href="#section-5-5.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-6-5.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-off-path-packet-forwarding-" class="selfRef">Off-Path Packet Forwarding Scenario</a>
         </figcaption></figure>
 </div>
-<p id="section-5-6">Three cases need to be considered:<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">Case 1: The old path is dead (e.g., due to a NAT rebinding), which leads to a
-timeout of (1).<a href="#section-5-7" class="pilcrow">¶</a></p>
-<p id="section-5-8">As shown in <a href="#fig-old-path-dead" class="xref">Figure 2</a>, a <code>path_challenge</code> (2) needs to be sent on
+<p id="section-6-6">Three cases need to be considered:<a href="#section-6-6" class="pilcrow">¶</a></p>
+<p id="section-6-7">Case 1: The old path is dead (e.g., due to a NAT rebinding), which leads to a
+timeout of (1).<a href="#section-6-7" class="pilcrow">¶</a></p>
+<p id="section-6-8">As shown in <a href="#fig-old-path-dead" class="xref">Figure 3</a>, a <code>path_challenge</code> (2) needs to be sent on
 the new path.  If the sender replies with a <code>path_response</code> on the new path
-(3), the switch to the new path is considered legitimate.<a href="#section-5-8" class="pilcrow">¶</a></p>
+(3), the switch to the new path is considered legitimate.<a href="#section-6-8" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-dead"></span><div id="fig-old-path-dead">
-<figure id="figure-2">
-        <div id="section-5-9.1">
-          <div class="alignCenter art-svg artwork" id="section-5-9.1.1">
+<figure id="figure-3">
+        <div id="section-6-9.1">
+          <div class="alignCenter art-svg artwork" id="section-6-9.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="368" width="384" viewBox="0 0 384 368" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 80,64 L 80,112" fill="none" stroke="black"></path>
               <path d="M 80,144 L 80,320" fill="none" stroke="black"></path>
@@ -1464,23 +1492,23 @@ the new path.  If the sender replies with a <code>path_response</code> on the ne
                 <text x="188" y="308">Sender</text>
                 <text x="260" y="308">.....'</text>
               </g>
-            </svg><a href="#section-5-9.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-6-9.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-old-path-is-dead" class="selfRef">Old path is dead</a>
         </figcaption></figure>
 </div>
-<p id="section-5-10">Case 2: The old path is alive but not preferred.<a href="#section-5-10" class="pilcrow">¶</a></p>
-<p id="section-5-11">This case is shown in <a href="#fig-old-path-not-preferred" class="xref">Figure 3</a> whereby the sender
+<p id="section-6-10">Case 2: The old path is alive but not preferred.<a href="#section-6-10" class="pilcrow">¶</a></p>
+<p id="section-6-11">This case is shown in <a href="#fig-old-path-not-preferred" class="xref">Figure 4</a> whereby the sender
 replies with a <code>path_drop</code> message (2) on the old path.  This triggers
 the receiver to send a <code>path_challenge</code> (3) on the new path. The sender
 will reply with a <code>path_response</code> (4) on the new path, thus providing
-confirmation for the path migration.<a href="#section-5-11" class="pilcrow">¶</a></p>
+confirmation for the path migration.<a href="#section-6-11" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-not-preferred"></span><div id="fig-old-path-not-preferred">
-<figure id="figure-3">
-        <div id="section-5-12.1">
-          <div class="alignCenter art-svg artwork" id="section-5-12.1.1">
+<figure id="figure-4">
+        <div id="section-6-12.1">
+          <div class="alignCenter art-svg artwork" id="section-6-12.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="352" width="424" viewBox="0 0 424 352" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 104,64 L 104,112" fill="none" stroke="black"></path>
               <path d="M 104,144 L 104,320" fill="none" stroke="black"></path>
@@ -1559,23 +1587,23 @@ confirmation for the path migration.<a href="#section-5-11" class="pilcrow">¶</
                 <text x="348" y="260">drop</text>
                 <text x="212" y="308">Sender</text>
               </g>
-            </svg><a href="#section-5-12.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-6-12.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-old-path-is-not-preferred" class="selfRef">Old path is not preferred</a>
         </figcaption></figure>
 </div>
-<p id="section-5-13">Case 3: The old path is alive and preferred.<a href="#section-5-13" class="pilcrow">¶</a></p>
-<p id="section-5-14">This is most likely the result of an off-path attacker trying to place itself
+<p id="section-6-13">Case 3: The old path is alive and preferred.<a href="#section-6-13" class="pilcrow">¶</a></p>
+<p id="section-6-14">This is most likely the result of an off-path attacker trying to place itself
 on path.  The receiver sends a <code>path_challenge</code> on the old path and the sender
 replies with a <code>path_response</code> (2) on the old path. The interaction is shown in
-<a href="#fig-old-path-preferred" class="xref">Figure 4</a>. This results in the connection not being migrated
-to the new path, thus thwarting the attack.<a href="#section-5-14" class="pilcrow">¶</a></p>
+<a href="#fig-old-path-preferred" class="xref">Figure 5</a>. This results in the connection not being migrated
+to the new path, thus thwarting the attack.<a href="#section-6-14" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-preferred"></span><div id="fig-old-path-preferred">
-<figure id="figure-4">
-        <div id="section-5-15.1">
-          <div class="alignCenter art-svg artwork" id="section-5-15.1.1">
+<figure id="figure-5">
+        <div id="section-6-15.1">
+          <div class="alignCenter art-svg artwork" id="section-6-15.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="384" width="352" viewBox="0 0 352 384" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
               <path d="M 64,80 L 64,176" fill="none" stroke="black"></path>
               <path d="M 64,224 L 64,320" fill="none" stroke="black"></path>
@@ -1634,185 +1662,192 @@ to the new path, thus thwarting the attack.<a href="#section-5-14" class="pilcro
                 <text x="188" y="276">response</text>
                 <text x="156" y="324">Sender</text>
               </g>
-            </svg><a href="#section-5-15.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-6-15.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-old-path-is-preferred" class="selfRef">Old path is preferred</a>
         </figcaption></figure>
 </div>
-<p id="section-5-16">Note that this defense is imperfect, but this is not considered a serious
+<p id="section-6-16">Note that this defense is imperfect, but this is not considered a serious
 problem. If the path via the attack is reliably faster than the
 old path despite multiple attempts to use that old path, it
 is not possible to distinguish between an attack and an improvement
-in routing.<a href="#section-5-16" class="pilcrow">¶</a></p>
-<p id="section-5-17">An endpoint could also use heuristics to improve detection of this
+in routing.<a href="#section-6-16" class="pilcrow">¶</a></p>
+<p id="section-6-17">An endpoint could also use heuristics to improve detection of this
 style of attack. For instance, NAT rebinding is improbable if
 packets were recently received on the old path; similarly, rebinding
 is rare on IPv6 paths. Endpoints can also look for duplicated
 packets. Conversely, a change in connection ID is more likely to
 indicate an intentional migration rather than an attack. Note that
 changes in connection IDs are supported in DTLS 1.3 but not in
-DTLS 1.2.<a href="#section-5-17" class="pilcrow">¶</a></p>
+DTLS 1.2.<a href="#section-6-17" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="regular">
-<section id="section-6">
+<div id="path-validation">
+<section id="section-7">
       <h2 id="name-path-validation-procedure">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-path-validation-procedure" class="section-name selfRef">Path Validation Procedure</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-path-validation-procedure" class="section-name selfRef">Path Validation Procedure</a>
       </h2>
-<p id="section-6-1">Note: This algorithm does not take the <a href="#off-path" class="xref">Section 5</a> scenario into account.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
+<div id="regular">
+<section id="section-7.1">
+        <h3 id="name-basic">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-basic" class="section-name selfRef">Basic</a>
+        </h3>
+<p id="section-7.1-1">Note: This algorithm does not take the <a href="#off-path" class="xref">Section 6</a> scenario into account.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
 any buffered application data (or limit the data sent to the unvalidated
 address to the anti-amplification limit) and initiate the return routability
-check that proceeds as follows:<a href="#section-6-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6-3">
-<li id="section-6-3.1">The receiver creates a <code>return_routability_check</code> message of
-type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-6-3.1" class="pilcrow">¶</a>
+check that proceeds as follows:<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-7.1-3">
+<li id="section-7.1-3.1">The receiver creates a <code>return_routability_check</code> message of
+type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7.1-3.1" class="pilcrow">¶</a>
 </li>
-        <li id="section-6-3.2">The message is sent to the observed new address and a timer T (see
-<a href="#timer-choice" class="xref">Section 7.3</a>) is started.<a href="#section-6-3.2" class="pilcrow">¶</a>
+          <li id="section-7.1-3.2">The message is sent to the observed new address and a timer T (see
+<a href="#timer-choice" class="xref">Section 7.5</a>) is started.<a href="#section-7.1-3.2" class="pilcrow">¶</a>
 </li>
-        <li id="section-6-3.3">The peer endpoint, after successfully verifying the received
+          <li id="section-7.1-3.3">The peer endpoint, after successfully verifying the received
 <code>return_routability_check</code> message responds by echoing the cookie value in a
-<code>return_routability_check</code> message of type <code>path_response</code>.<a href="#section-6-3.3" class="pilcrow">¶</a>
+<code>return_routability_check</code> message of type <code>path_response</code>.<a href="#section-7.1-3.3" class="pilcrow">¶</a>
 </li>
-        <li id="section-6-3.4">When the initiator receives and verifies the <code>return_routability_check</code>
-message contains the sent cookie, it updates the peer address binding.<a href="#section-6-3.4" class="pilcrow">¶</a>
+          <li id="section-7.1-3.4">When the initiator receives and verifies the <code>return_routability_check</code>
+message contains the sent cookie, it updates the peer address binding.<a href="#section-7.1-3.4" class="pilcrow">¶</a>
 </li>
-        <li id="section-6-3.5">If T expires, or the address confirmation fails, the peer address binding is
-not updated.<a href="#section-6-3.5" class="pilcrow">¶</a>
+          <li id="section-7.1-3.5">If T expires, or the address confirmation fails, the peer address binding is
+not updated.<a href="#section-7.1-3.5" class="pilcrow">¶</a>
 </li>
-      </ol>
-<p id="section-6-4">After this point, any pending send operation is resumed to the bound peer
-address.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5"><a href="#path-challenge-reqs" class="xref">Section 7.1</a> and <a href="#path-response-reqs" class="xref">Section 7.2</a> contain the requirements for
-the initiator and responder roles, broken down per protocol phase.<a href="#section-6-5" class="pilcrow">¶</a></p>
+        </ol>
+<p id="section-7.1-4">After this point, any pending send operation is resumed to the bound peer
+address.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1-5"><a href="#path-challenge-reqs" class="xref">Section 7.3</a> and <a href="#path-response-reqs" class="xref">Section 7.4</a> contain the requirements for
+the initiator and responder roles, broken down per protocol phase.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="enhanced">
-<section id="section-7">
-      <h2 id="name-enhanced-path-validation-pr">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-enhanced-path-validation-pr" class="section-name selfRef">Enhanced Path Validation Procedure</a>
-      </h2>
-<p id="section-7-1">Note: This algorithm also takes the <a href="#off-path" class="xref">Section 5</a> scenario into account.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
+<section id="section-7.2">
+        <h3 id="name-enhanced">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-enhanced" class="section-name selfRef">Enhanced</a>
+        </h3>
+<p id="section-7.2-1">Note: This algorithm also takes the <a href="#off-path" class="xref">Section 6</a> scenario into account.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-2">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
 any buffered application data (or limit the data sent to the unvalidated
 address to the anti-amplification limit) and initiate the return routability
-check that proceeds as follows:<a href="#section-7-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7-3">
-<li id="section-7-3.1">The receiver creates a <code>return_routability_check</code> message of
-type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7-3.1" class="pilcrow">¶</a>
+check that proceeds as follows:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-7.2-3">
+<li id="section-7.2-3.1">The receiver creates a <code>return_routability_check</code> message of
+type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7.2-3.1" class="pilcrow">¶</a>
 </li>
-        <li id="section-7-3.2">The message is sent to the previously valid address, which corresponds to the
-old path. Additionally, a timer T, see <a href="#timer-choice" class="xref">Section 7.3</a>, is started.<a href="#section-7-3.2" class="pilcrow">¶</a>
+          <li id="section-7.2-3.2">The message is sent to the previously valid address, which corresponds to the
+old path. Additionally, a timer T, see <a href="#timer-choice" class="xref">Section 7.5</a>, is started.<a href="#section-7.2-3.2" class="pilcrow">¶</a>
 </li>
-        <li id="section-7-3.3">
-          <p id="section-7-3.3.1">The peer endpoint verifies the received <code>return_routability_check</code> message.
+          <li id="section-7.2-3.3">
+            <p id="section-7.2-3.3.1">The peer endpoint verifies the received <code>return_routability_check</code> message.
 The action to be taken depends on the preference of the path through which
-the message was received:<a href="#section-7-3.3.1" class="pilcrow">¶</a></p>
+the message was received:<a href="#section-7.2-3.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7-3.3.2.1">If the path through which the message was received is preferred,
-a <code>return_routability_check</code> message of type <code>path_response</code> <span class="bcp14">MUST</span> be returned.<a href="#section-7-3.3.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-7.2-3.3.2.1">If the path through which the message was received is preferred,
+a <code>return_routability_check</code> message of type <code>path_response</code> <span class="bcp14">MUST</span> be returned.<a href="#section-7.2-3.3.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7-3.3.2.2">If the path through which the message was received is not preferred,
+              <li class="normal" id="section-7.2-3.3.2.2">If the path through which the message was received is not preferred,
 a <code>return_routability_check</code> message of type <code>path_drop</code> <span class="bcp14">MUST</span> be returned.
-In either case, the peer endpoint echoes the cookie value in the response.<a href="#section-7-3.3.2.2" class="pilcrow">¶</a>
-</li>
-          </ul>
-</li>
-        <li id="section-7-3.4">
-          <p id="section-7-3.4.1">The initiator receives and verifies that the <code>return_routability_check</code>
-message contains the previously sent cookie. The actions taken by the
-initiator differ based on the received message:<a href="#section-7-3.4.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-7-3.4.2.1">When a <code>return_routability_check</code> message of type <code>path_response</code> was received,
-the initiator <span class="bcp14">MUST</span> continue using the previously valid address, i.e. no switch
-to the new path takes place and the peer address binding is not updated.<a href="#section-7-3.4.2.1" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="section-7-3.4.2.2">When a <code>return_routability_check</code> message of type <code>path_drop</code> was received,
-the initiator <span class="bcp14">MUST</span> perform a return routability check on the observed new
-address, as described in <a href="#regular" class="xref">Section 6</a>.<a href="#section-7-3.4.2.2" class="pilcrow">¶</a>
-</li>
-          </ul>
-</li>
-        <li id="section-7-3.5">If T expires, or the address confirmation fails, the peer address binding is
-not updated. In this case, the initiator <span class="bcp14">MUST</span> perform a return routability
-check on the observed new address, as described in <a href="#regular" class="xref">Section 6</a>.<a href="#section-7-3.5" class="pilcrow">¶</a>
-</li>
-      </ol>
-<p id="section-7-4">After the path validation procedure is completed, any pending send operation is
-resumed to the bound peer address.<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5"><a href="#path-challenge-reqs" class="xref">Section 7.1</a> and <a href="#path-response-reqs" class="xref">Section 7.2</a> contain the requirements for
-the initiator and responder roles, broken down per protocol phase.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<div id="path-challenge-reqs">
-<section id="section-7.1">
-        <h3 id="name-path-challenge-requirements">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-path-challenge-requirements" class="section-name selfRef">Path Challenge Requirements</a>
-        </h3>
-<ul class="normal">
-<li class="normal" id="section-7.1-1.1">
-            <p id="section-7.1-1.1.1">The initiator <span class="bcp14">MAY</span> send multiple <code>return_routability_check</code> messages of type
-<code>path_challenge</code> to cater for packet loss on the probed path.<a href="#section-7.1-1.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-7.1-1.1.2.1">Each <code>path_challenge</code> <span class="bcp14">SHOULD</span> go into different transport packets.  (Note that
-the DTLS implementation may not have control over the packetization done by
-the transport layer.)<a href="#section-7.1-1.1.2.1" class="pilcrow">¶</a>
-</li>
-              <li class="normal" id="section-7.1-1.1.2.2">The transmission of subsequent <code>path_challenge</code> messages <span class="bcp14">SHOULD</span> be paced to
-decrease the chance of loss.<a href="#section-7.1-1.1.2.2" class="pilcrow">¶</a>
-</li>
-              <li class="normal" id="section-7.1-1.1.2.3">Each <code>path_challenge</code> message <span class="bcp14">MUST</span> contain random data.<a href="#section-7.1-1.1.2.3" class="pilcrow">¶</a>
+In either case, the peer endpoint echoes the cookie value in the response.<a href="#section-7.2-3.3.2.2" class="pilcrow">¶</a>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-7.1-1.2">The initiator <span class="bcp14">MAY</span> use padding using the record padding mechanism available in
+          <li id="section-7.2-3.4">
+            <p id="section-7.2-3.4.1">The initiator receives and verifies that the <code>return_routability_check</code>
+message contains the previously sent cookie. The actions taken by the
+initiator differ based on the received message:<a href="#section-7.2-3.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.2-3.4.2.1">When a <code>return_routability_check</code> message of type <code>path_response</code> was received,
+the initiator <span class="bcp14">MUST</span> continue using the previously valid address, i.e. no switch
+to the new path takes place and the peer address binding is not updated.<a href="#section-7.2-3.4.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-7.2-3.4.2.2">When a <code>return_routability_check</code> message of type <code>path_drop</code> was received,
+the initiator <span class="bcp14">MUST</span> perform a return routability check on the observed new
+address, as described in <a href="#regular" class="xref">Section 7.1</a>.<a href="#section-7.2-3.4.2.2" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+          <li id="section-7.2-3.5">If T expires, or the address confirmation fails, the peer address binding is
+not updated. In this case, the initiator <span class="bcp14">MUST</span> perform a return routability
+check on the observed new address, as described in <a href="#regular" class="xref">Section 7.1</a>.<a href="#section-7.2-3.5" class="pilcrow">¶</a>
+</li>
+        </ol>
+<p id="section-7.2-4">After the path validation procedure is completed, any pending send operation is
+resumed to the bound peer address.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.2-5"><a href="#path-challenge-reqs" class="xref">Section 7.3</a> and <a href="#path-response-reqs" class="xref">Section 7.4</a> contain the requirements for
+the initiator and responder roles, broken down per protocol phase.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="path-challenge-reqs">
+<section id="section-7.3">
+        <h3 id="name-path-challenge-requirements">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-path-challenge-requirements" class="section-name selfRef">Path Challenge Requirements</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-7.3-1.1">
+            <p id="section-7.3-1.1.1">The initiator <span class="bcp14">MAY</span> send multiple <code>return_routability_check</code> messages of type
+<code>path_challenge</code> to cater for packet loss on the probed path.<a href="#section-7.3-1.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.3-1.1.2.1">Each <code>path_challenge</code> <span class="bcp14">SHOULD</span> go into different transport packets.  (Note that
+the DTLS implementation may not have control over the packetization done by
+the transport layer.)<a href="#section-7.3-1.1.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-7.3-1.1.2.2">The transmission of subsequent <code>path_challenge</code> messages <span class="bcp14">SHOULD</span> be paced to
+decrease the chance of loss.<a href="#section-7.3-1.1.2.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-7.3-1.1.2.3">Each <code>path_challenge</code> message <span class="bcp14">MUST</span> contain random data.<a href="#section-7.3-1.1.2.3" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-7.3-1.2">The initiator <span class="bcp14">MAY</span> use padding using the record padding mechanism available in
 DTLS 1.3 (and in DTLS 1.2, when CID is enabled on the sending direction) up
 to the anti-amplification limit to probe if the path MTU (PMTU) for the new
-path is still acceptable.<a href="#section-7.1-1.2" class="pilcrow">¶</a>
+path is still acceptable.<a href="#section-7.3-1.2" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
 </div>
 <div id="path-response-reqs">
-<section id="section-7.2">
+<section id="section-7.4">
         <h3 id="name-path-response-drop-requirem">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-path-response-drop-requirem" class="section-name selfRef">Path Response/Drop Requirements</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-path-response-drop-requirem" class="section-name selfRef">Path Response/Drop Requirements</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="section-7.2-1.1">The responder <span class="bcp14">MUST NOT</span> delay sending an elicited <code>path_response</code> or
-<code>path_drop</code> messages.<a href="#section-7.2-1.1" class="pilcrow">¶</a>
+<li class="normal" id="section-7.4-1.1">The responder <span class="bcp14">MUST NOT</span> delay sending an elicited <code>path_response</code> or
+<code>path_drop</code> messages.<a href="#section-7.4-1.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-7.2-1.2">The responder <span class="bcp14">MUST</span> send exactly one <code>path_response</code> or <code>path_drop</code> message
-for each received <code>path_challenge</code>.<a href="#section-7.2-1.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-7.4-1.2">The responder <span class="bcp14">MUST</span> send exactly one <code>path_response</code> or <code>path_drop</code> message
+for each received <code>path_challenge</code>.<a href="#section-7.4-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-7.2-1.3">The responder <span class="bcp14">MUST</span> send the <code>path_response</code> or the <code>path_drop</code> on the path
+          <li class="normal" id="section-7.4-1.3">The responder <span class="bcp14">MUST</span> send the <code>path_response</code> or the <code>path_drop</code> on the path
 where the corresponding <code>path_challenge</code> has been received, so that validation
 succeeds only if the path is functional in both directions. The initiator
-<span class="bcp14">MUST NOT</span> enforce this behaviour.<a href="#section-7.2-1.3" class="pilcrow">¶</a>
+<span class="bcp14">MUST NOT</span> enforce this behaviour.<a href="#section-7.4-1.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-7.2-1.4">The initiator <span class="bcp14">MUST</span> silently discard any invalid <code>path_response</code> it receives.<a href="#section-7.2-1.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-7.4-1.4">The initiator <span class="bcp14">MUST</span> silently discard any invalid <code>path_response</code> it receives.<a href="#section-7.4-1.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-7.2-2">Note that RRC does not cater for PMTU discovery on the reverse path.  If the
+<p id="section-7.4-2">Note that RRC does not cater for PMTU discovery on the reverse path.  If the
 responder wants to do PMTU discovery using RRC, it should initiate a new path
-validation procedure.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+validation procedure.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="timer-choice">
-<section id="section-7.3">
+<section id="section-7.5">
         <h3 id="name-timer-choice">
-<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-timer-choice" class="section-name selfRef">Timer Choice</a>
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-timer-choice" class="section-name selfRef">Timer Choice</a>
         </h3>
-<p id="section-7.3-1">When setting T, implementations are cautioned that the new path could have a
-longer round-trip time (RTT) than the original.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">In settings where there is external information about the RTT of the active
-path, implementations <span class="bcp14">SHOULD</span> use T = 3xRTT.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
-<p id="section-7.3-3">If an implementation has no way to obtain information regarding the RTT of the
-active path, a value of 1s <span class="bcp14">SHOULD</span> be used.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
-<p id="section-7.3-4">Profiles for specific deployment environments -- for example, constrained
+<p id="section-7.5-1">When setting T, implementations are cautioned that the new path could have a
+longer round-trip time (RTT) than the original.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<p id="section-7.5-2">In settings where there is external information about the RTT of the active
+path, implementations <span class="bcp14">SHOULD</span> use T = 3xRTT.<a href="#section-7.5-2" class="pilcrow">¶</a></p>
+<p id="section-7.5-3">If an implementation has no way to obtain information regarding the RTT of the
+active path, a value of 1s <span class="bcp14">SHOULD</span> be used.<a href="#section-7.5-3" class="pilcrow">¶</a></p>
+<p id="section-7.5-4">Profiles for specific deployment environments -- for example, constrained
 networks <span>[<a href="#I-D.ietf-uta-tls13-iot-profile" class="xref">I-D.ietf-uta-tls13-iot-profile</a>]</span> -- <span class="bcp14">MAY</span> specify a different, more
-suitable value.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
+suitable value.<a href="#section-7.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1822,10 +1857,10 @@ suitable value.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
       <h2 id="name-example">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-example" class="section-name selfRef">Example</a>
       </h2>
-<p id="section-8-1">The example TLS 1.3 handshake shown in <a href="#fig-handshake" class="xref">Figure 5</a> shows a client
+<p id="section-8-1">The example TLS 1.3 handshake shown in <a href="#fig-handshake" class="xref">Figure 6</a> shows a client
 and a server negotiating the support for CID and for the RRC extension.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <span id="name-message-flow-for-full-tls-h"></span><div id="fig-handshake">
-<figure id="figure-5">
+<figure id="figure-6">
         <div class="alignLeft art-text artwork" id="section-8-2.1">
 <pre>
        Client                                           Server
@@ -1864,7 +1899,7 @@ Auth | {CertificateVerify}
                  derived from [sender]_application_traffic_secret_N.
 </pre>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-message-flow-for-full-tls-h" class="selfRef">Message Flow for Full TLS Handshake</a>
         </figcaption></figure>
 </div>
@@ -1877,7 +1912,7 @@ the client changes and, thanks to the CID usage, the security context to
 interpret the record is successfully located by the server.  However, the
 server wants to test the reachability of the client at his new IP address.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <span id="name-return-routability-example"></span><div id="fig-rrc-example">
-<figure id="figure-6">
+<figure id="figure-7">
         <div class="alignLeft art-text artwork" id="section-8-5.1">
 <pre>
       Client                                             Server
@@ -1926,7 +1961,7 @@ server wants to test the reachability of the client at his new IP address.<a hre
                                                        Dst-IP=B
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-return-routability-example" class="selfRef">Return Routability Example</a>
         </figcaption></figure>
 </div>
