@@ -1705,38 +1705,44 @@ DTLS 1.2.<a href="#section-6.1-17" class="pilcrow">¶</a></p>
       <h2 id="name-path-validation-procedure">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-path-validation-procedure" class="section-name selfRef">Path Validation Procedure</a>
       </h2>
+<p id="section-7-1">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
+any buffered application data, or limit the data sent to the unvalidated
+address to the anti-amplification limit.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">It then initiates the return routability check that proceeds as described
+either in <a href="#enhanced" class="xref">Section 7.2</a> or <a href="#regular" class="xref">Section 7.1</a>, depending on whether the off-path
+attacker scenario described in <a href="#off-path" class="xref">Section 6.1</a> is to be taken into account or not.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">(The decision on what strategy to choose depends mainly on the threat model, but
+may also be influenced by other considerations.  Examples of impacting factors
+include: the need to minimise implementation complexity, privacy concerns, the
+need to reduce the time it takes to switch path.  The choice may be offered as
+a configuration option to the user.)<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">After the path validation procedure is completed, any pending send operation is
+resumed to the bound peer address.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5"><a href="#path-challenge-reqs" class="xref">Section 7.3</a> and <a href="#path-response-reqs" class="xref">Section 7.4</a> list the requirements for
+the initiator and responder roles, broken down per protocol phase.<a href="#section-7-5" class="pilcrow">¶</a></p>
 <div id="regular">
 <section id="section-7.1">
         <h3 id="name-basic">
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-basic" class="section-name selfRef">Basic</a>
         </h3>
-<p id="section-7.1-1">Note: This algorithm does not take the <a href="#off-path" class="xref">Section 6.1</a> scenario into account.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
-any buffered application data (or limit the data sent to the unvalidated
-address to the anti-amplification limit) and initiate the return routability
-check that proceeds as follows:<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7.1-3">
-<li id="section-7.1-3.1">The receiver creates a <code>return_routability_check</code> message of
-type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7.1-3.1" class="pilcrow">¶</a>
+<ol start="1" type="1" class="normal type-1" id="section-7.1-1">
+<li id="section-7.1-1.1">The receiver creates a <code>return_routability_check</code> message of
+type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7.1-1.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-7.1-3.2">The message is sent to the observed new address and a timer T (see
-<a href="#timer-choice" class="xref">Section 7.5</a>) is started.<a href="#section-7.1-3.2" class="pilcrow">¶</a>
+          <li id="section-7.1-1.2">The message is sent to the observed new address and a timer T (see
+<a href="#timer-choice" class="xref">Section 7.5</a>) is started.<a href="#section-7.1-1.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-7.1-3.3">The peer endpoint, after successfully verifying the received
+          <li id="section-7.1-1.3">The peer endpoint, after successfully verifying the received
 <code>return_routability_check</code> message responds by echoing the cookie value in a
-<code>return_routability_check</code> message of type <code>path_response</code>.<a href="#section-7.1-3.3" class="pilcrow">¶</a>
+<code>return_routability_check</code> message of type <code>path_response</code>.<a href="#section-7.1-1.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-7.1-3.4">When the initiator receives and verifies the <code>return_routability_check</code>
-message contains the sent cookie, it updates the peer address binding.<a href="#section-7.1-3.4" class="pilcrow">¶</a>
+          <li id="section-7.1-1.4">When the initiator receives the <code>return_routability_check</code>
+message and verifies that it contains the sent cookie, it updates the peer
+address binding.<a href="#section-7.1-1.4" class="pilcrow">¶</a>
 </li>
-          <li id="section-7.1-3.5">If T expires, or the address confirmation fails, the peer address binding is
-not updated.<a href="#section-7.1-3.5" class="pilcrow">¶</a>
+          <li id="section-7.1-1.5">If T expires the peer address binding is not updated.<a href="#section-7.1-1.5" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-7.1-4">After this point, any pending send operation is resumed to the bound peer
-address.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
-<p id="section-7.1-5"><a href="#path-challenge-reqs" class="xref">Section 7.3</a> and <a href="#path-response-reqs" class="xref">Section 7.4</a> list the requirements for
-the initiator and responder roles, broken down per protocol phase.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="enhanced">
@@ -1744,56 +1750,48 @@ the initiator and responder roles, broken down per protocol phase.<a href="#sect
         <h3 id="name-enhanced">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-enhanced" class="section-name selfRef">Enhanced</a>
         </h3>
-<p id="section-7.2-1">Note: This algorithm also takes the <a href="#off-path" class="xref">Section 6.1</a> scenario into account.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">The receiver that observes the peer's address or port update <span class="bcp14">MUST</span> stop sending
-any buffered application data (or limit the data sent to the unvalidated
-address to the anti-amplification limit) and initiate the return routability
-check that proceeds as follows:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7.2-3">
-<li id="section-7.2-3.1">The receiver creates a <code>return_routability_check</code> message of
-type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7.2-3.1" class="pilcrow">¶</a>
+<ol start="1" type="1" class="normal type-1" id="section-7.2-1">
+<li id="section-7.2-1.1">The receiver creates a <code>return_routability_check</code> message of
+type <code>path_challenge</code> and places the unpredictable cookie into the message.<a href="#section-7.2-1.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-7.2-3.2">The message is sent to the previously valid address, which corresponds to the
-old path. Additionally, a timer T, see <a href="#timer-choice" class="xref">Section 7.5</a>, is started.<a href="#section-7.2-3.2" class="pilcrow">¶</a>
+          <li id="section-7.2-1.2">The message is sent to the previously valid address, which corresponds to the
+old path. Additionally, a timer T, see <a href="#timer-choice" class="xref">Section 7.5</a>, is started.<a href="#section-7.2-1.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-7.2-3.3">
-            <p id="section-7.2-3.3.1">The peer endpoint verifies the received <code>return_routability_check</code> message.
-The action to be taken depends on the preference of the path through which
-the message was received:<a href="#section-7.2-3.3.1" class="pilcrow">¶</a></p>
+          <li id="section-7.2-1.3">
+            <p id="section-7.2-1.3.1">If the path is still functional, the peer endpoint verifies the received
+<code>return_routability_check</code> message.
+The action to be taken depends on whether the path through which
+the message was received is the preferred one or not anymore:<a href="#section-7.2-1.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7.2-3.3.2.1">If the path through which the message was received is preferred,
-a <code>return_routability_check</code> message of type <code>path_response</code> <span class="bcp14">MUST</span> be returned.<a href="#section-7.2-3.3.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-7.2-1.3.2.1">If the path through which the message was received is preferred,
+a <code>return_routability_check</code> message of type <code>path_response</code> <span class="bcp14">MUST</span> be returned.<a href="#section-7.2-1.3.2.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-7.2-3.3.2.2">If the path through which the message was received is not preferred,
+              <li class="normal" id="section-7.2-1.3.2.2">If the path through which the message was received is not preferred,
 a <code>return_routability_check</code> message of type <code>path_drop</code> <span class="bcp14">MUST</span> be returned.
-In either case, the peer endpoint echoes the cookie value in the response.<a href="#section-7.2-3.3.2.2" class="pilcrow">¶</a>
+In either case, the peer endpoint echoes the cookie value in the response.<a href="#section-7.2-1.3.2.2" class="pilcrow">¶</a>
 </li>
             </ul>
 </li>
-          <li id="section-7.2-3.4">
-            <p id="section-7.2-3.4.1">The initiator receives and verifies that the <code>return_routability_check</code>
+          <li id="section-7.2-1.4">
+            <p id="section-7.2-1.4.1">The initiator receives and verifies that the <code>return_routability_check</code>
 message contains the previously sent cookie. The actions taken by the
-initiator differ based on the received message:<a href="#section-7.2-3.4.1" class="pilcrow">¶</a></p>
+initiator differ based on the received message:<a href="#section-7.2-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7.2-3.4.2.1">When a <code>return_routability_check</code> message of type <code>path_response</code> was received,
+<li class="normal" id="section-7.2-1.4.2.1">When a <code>return_routability_check</code> message of type <code>path_response</code> was received,
 the initiator <span class="bcp14">MUST</span> continue using the previously valid address, i.e. no switch
-to the new path takes place and the peer address binding is not updated.<a href="#section-7.2-3.4.2.1" class="pilcrow">¶</a>
+to the new path takes place and the peer address binding is not updated.<a href="#section-7.2-1.4.2.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-7.2-3.4.2.2">When a <code>return_routability_check</code> message of type <code>path_drop</code> was received,
+              <li class="normal" id="section-7.2-1.4.2.2">When a <code>return_routability_check</code> message of type <code>path_drop</code> was received,
 the initiator <span class="bcp14">MUST</span> perform a return routability check on the observed new
-address, as described in <a href="#regular" class="xref">Section 7.1</a>.<a href="#section-7.2-3.4.2.2" class="pilcrow">¶</a>
+address, as described in <a href="#regular" class="xref">Section 7.1</a>.<a href="#section-7.2-1.4.2.2" class="pilcrow">¶</a>
 </li>
             </ul>
 </li>
-          <li id="section-7.2-3.5">If T expires, or the address confirmation fails, the peer address binding is
-not updated. In this case, the initiator <span class="bcp14">MUST</span> perform a return routability
-check on the observed new address, as described in <a href="#regular" class="xref">Section 7.1</a>.<a href="#section-7.2-3.5" class="pilcrow">¶</a>
+          <li id="section-7.2-1.5">If T expires the peer address binding is not updated. In this case, the
+initiator <span class="bcp14">MUST</span> perform a return routability check on the observed new
+address, as described in <a href="#regular" class="xref">Section 7.1</a>.<a href="#section-7.2-1.5" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-7.2-4">After the path validation procedure is completed, any pending send operation is
-resumed to the bound peer address.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.2-5"><a href="#path-challenge-reqs" class="xref">Section 7.3</a> and <a href="#path-response-reqs" class="xref">Section 7.4</a> list the requirements for
-the initiator and responder roles, broken down per protocol phase.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="path-challenge-reqs">

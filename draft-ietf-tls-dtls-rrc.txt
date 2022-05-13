@@ -395,15 +395,29 @@ Table of Contents
 
 7.  Path Validation Procedure
 
-7.1.  Basic
-
-   Note: This algorithm does not take the Section 6.1 scenario into
-   account.
-
    The receiver that observes the peer's address or port update MUST
-   stop sending any buffered application data (or limit the data sent to
-   the unvalidated address to the anti-amplification limit) and initiate
-   the return routability check that proceeds as follows:
+   stop sending any buffered application data, or limit the data sent to
+   the unvalidated address to the anti-amplification limit.
+
+   It then initiates the return routability check that proceeds as
+   described either in Section 7.2 or Section 7.1, depending on whether
+   the off-path attacker scenario described in Section 6.1 is to be
+   taken into account or not.
+
+   (The decision on what strategy to choose depends mainly on the threat
+   model, but may also be influenced by other considerations.  Examples
+   of impacting factors include: the need to minimise implementation
+   complexity, privacy concerns, the need to reduce the time it takes to
+   switch path.  The choice may be offered as a configuration option to
+   the user.)
+
+   After the path validation procedure is completed, any pending send
+   operation is resumed to the bound peer address.
+
+   Section 7.3 and Section 7.4 list the requirements for the initiator
+   and responder roles, broken down per protocol phase.
+
+7.1.  Basic
 
    1.  The receiver creates a return_routability_check message of type
        path_challenge and places the unpredictable cookie into the
@@ -417,28 +431,13 @@ Table of Contents
        value in a return_routability_check message of type
        path_response.
 
-   4.  When the initiator receives and verifies the
-       return_routability_check message contains the sent cookie, it
-       updates the peer address binding.
+   4.  When the initiator receives the return_routability_check message
+       and verifies that it contains the sent cookie, it updates the
+       peer address binding.
 
-   5.  If T expires, or the address confirmation fails, the peer address
-       binding is not updated.
-
-   After this point, any pending send operation is resumed to the bound
-   peer address.
-
-   Section 7.3 and Section 7.4 list the requirements for the initiator
-   and responder roles, broken down per protocol phase.
+   5.  If T expires the peer address binding is not updated.
 
 7.2.  Enhanced
-
-   Note: This algorithm also takes the Section 6.1 scenario into
-   account.
-
-   The receiver that observes the peer's address or port update MUST
-   stop sending any buffered application data (or limit the data sent to
-   the unvalidated address to the anti-amplification limit) and initiate
-   the return routability check that proceeds as follows:
 
    1.  The receiver creates a return_routability_check message of type
        path_challenge and places the unpredictable cookie into the
@@ -448,9 +447,10 @@ Table of Contents
        corresponds to the old path.  Additionally, a timer T, see
        Section 7.5, is started.
 
-   3.  The peer endpoint verifies the received return_routability_check
-       message.  The action to be taken depends on the preference of the
-       path through which the message was received:
+   3.  If the path is still functional, the peer endpoint verifies the
+       received return_routability_check message.  The action to be
+       taken depends on whether the path through which the message was
+       received is the preferred one or not anymore:
 
        *  If the path through which the message was received is
           preferred, a return_routability_check message of type
@@ -476,16 +476,9 @@ Table of Contents
           check on the observed new address, as described in
           Section 7.1.
 
-   5.  If T expires, or the address confirmation fails, the peer address
-       binding is not updated.  In this case, the initiator MUST perform
-       a return routability check on the observed new address, as
-       described in Section 7.1.
-
-   After the path validation procedure is completed, any pending send
-   operation is resumed to the bound peer address.
-
-   Section 7.3 and Section 7.4 list the requirements for the initiator
-   and responder roles, broken down per protocol phase.
+   5.  If T expires the peer address binding is not updated.  In this
+       case, the initiator MUST perform a return routability check on
+       the observed new address, as described in Section 7.1.
 
 7.3.   Path Challenge Requirements
 
