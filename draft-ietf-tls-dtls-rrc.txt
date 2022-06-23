@@ -228,9 +228,7 @@ Table of Contents
 
 6.  Attacker Model
 
-   RRC is not designed to counter man-in-the-middle attackers.  These
-   can never be distinguished from a genuine network device.  Instead,
-   the types of attacker RRC is designed to withstand are:
+   RRC is designed to withstand the following attacks:
 
    *  On-path attackers that try to trigger a connection migration
       (Section 6.1);
@@ -238,6 +236,13 @@ Table of Contents
    *  Off-path attackers that try to put themselves on-path
       (Section 6.2) -- provided that the enhanced path validation
       algorithm is used, see Section 7.2.
+
+   It is not possible for RRC to counter a man-in-the-middle attacker
+   that is indistinguishable from a genuine network device.  Such an
+   attacker could, for example, drop, reorder or delay records at will.
+   Man-in-the-middle attackers cannot craft DTLS records that would
+   successfully pass verification due to the cryptographic protections
+   applied by the DTLS record layer.
 
 6.1.  On-Path Attacker
 

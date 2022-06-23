@@ -1377,9 +1377,7 @@ routability check as described in <a href="#path-validation" class="xref">Sectio
       <h2 id="name-attacker-model">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-attacker-model" class="section-name selfRef">Attacker Model</a>
       </h2>
-<p id="section-6-1">RRC is not designed to counter man-in-the-middle attackers.  These can never be
-distinguished from a genuine network device.  Instead, the types of attacker
-RRC is designed to withstand are:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">RRC is designed to withstand the following attacks:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-2.1">On-path attackers that try to trigger a connection migration (<a href="#on-path" class="xref">Section 6.1</a>);<a href="#section-6-2.1" class="pilcrow">¶</a>
 </li>
@@ -1388,6 +1386,11 @@ provided that the enhanced path validation algorithm is used, see
 <a href="#enhanced" class="xref">Section 7.2</a>.<a href="#section-6-2.2" class="pilcrow">¶</a>
 </li>
       </ul>
+<p id="section-6-3">It is not possible for RRC to counter a man-in-the-middle attacker that is
+indistinguishable from a genuine network device. Such an attacker could, for
+example, drop, reorder or delay records at will. Man-in-the-middle attackers cannot
+craft DTLS records that would successfully pass verification due to the
+cryptographic protections applied by the DTLS record layer.<a href="#section-6-3" class="pilcrow">¶</a></p>
 <div id="on-path">
 <section id="section-6.1">
         <h3 id="name-on-path-attacker">
