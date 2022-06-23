@@ -5,8 +5,8 @@
 TLS                                                   H. Tschofenig, Ed.
 Internet-Draft                                                T. Fossati
 Updates: 6347 (if approved)                                  Arm Limited
-Intended status: Standards Track                            14 June 2022
-Expires: 16 December 2022
+Intended status: Standards Track                            23 June 2022
+Expires: 25 December 2022
 
 
            Return Routability Check for DTLS 1.2 and DTLS 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 December 2022.
+   This Internet-Draft will expire on 25 December 2022.
 
 Copyright Notice
 
@@ -250,7 +250,7 @@ Table of Contents
    cryptographic keys needed to decode the path_challenge message that
    is sent to it, and therefore to produce the corresponding
    path_response.  Since the path validation fails, the address binding
-   is not altered, thus twarting the attack.
+   is not altered, thus thwarting the attack.
 
 6.2.  Off-Path Packet Forwarding
 
