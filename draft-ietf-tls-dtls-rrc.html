@@ -1158,7 +1158,10 @@ protocol versions 1.2 and 1.3.<a href="#section-abstract-1" class="pilcrow">¶</
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-attacker-model" class="xref">Attacker Model</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-off-path-packet-forwarding" class="xref">Off-Path Packet Forwarding</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-on-path-attacker" class="xref">On-Path Attacker</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-off-path-packet-forwarding" class="xref">Off-Path Packet Forwarding</a></p>
 </li>
             </ul>
 </li>
@@ -1374,41 +1377,64 @@ routability check as described in <a href="#path-validation" class="xref">Sectio
       <h2 id="name-attacker-model">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-attacker-model" class="section-name selfRef">Attacker Model</a>
       </h2>
-<p id="section-6-1">RRC is not designed to counter on-path attackers.  These can never be
-distinguished from, for example, a genuine network device.  However, RRC can
-withstand off-path attackers of the type described below when the enhanced path
-validation algorithm (<a href="#enhanced" class="xref">Section 7.2</a>) is used.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<div id="off-path">
+<p id="section-6-1">RRC is not designed to counter man-in-the-middle attackers.  These can never be
+distinguished from a genuine network device.  Instead, the types of attacker
+RRC is designed to withstand are:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-2.1">On-path attackers that try to trigger a connection migration (<a href="#on-path" class="xref">Section 6.1</a>);<a href="#section-6-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-2.2">Off-path attackers that try to put themselves on-path (<a href="#off-path" class="xref">Section 6.2</a>) --
+provided that the enhanced path validation algorithm is used, see
+<a href="#enhanced" class="xref">Section 7.2</a>.<a href="#section-6-2.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<div id="on-path">
 <section id="section-6.1">
-        <h3 id="name-off-path-packet-forwarding">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-off-path-packet-forwarding" class="section-name selfRef">Off-Path Packet Forwarding</a>
+        <h3 id="name-on-path-attacker">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-on-path-attacker" class="section-name selfRef">On-Path Attacker</a>
         </h3>
-<p id="section-6.1-1">An off-path attacker that can observe packets might forward copies of
+<p id="section-6.1-1">An on-path attacker could make a copy of a packet, replace the source address
+with a spoofed one and forward it to the original destination.  If the spoofed
+packet arrives before the original it will be regarded as a migration, while
+the original packet will be flagged as a duplicate and dropped.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">The subsequent path validation (<a href="#path-validation" class="xref">Section 7</a>) will fail because the
+entity at the (spoofed) source address does not have the cryptographic keys
+needed to decode the <code>path_challenge</code> message that is sent to it, and therefore
+to produce the corresponding <code>path_response</code>.  Since the path validation fails,
+the address binding is not altered, thus thwarting the attack.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="off-path">
+<section id="section-6.2">
+        <h3 id="name-off-path-packet-forwarding">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-off-path-packet-forwarding" class="section-name selfRef">Off-Path Packet Forwarding</a>
+        </h3>
+<p id="section-6.2-1">An off-path attacker that can observe packets might forward copies of
 genuine packets to endpoints over a different path. If the copied packet arrives before
 the genuine packet, this will appear as a path change, like in a genuine NAT rebinding occurrence. Any genuine
 packet will be discarded as a duplicate. If the attacker is able to
 continue forwarding packets, it might be able to cause migration to a
 path via the attacker. This places the attacker on-path, giving it
-the ability to observe or drop all subsequent packets.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">This style of attack relies on the attacker using a path that has
+the ability to observe or drop all subsequent packets.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">This style of attack relies on the attacker using a path that has
 the same or better characteristics (e.g., due to a more favourable service level agreements) as the direct path between
 endpoints. The attack is more reliable if relatively few packets are
-sent or if packet loss coincides with the attempted attack.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">A data packet received on the original path that increases the
+sent or if packet loss coincides with the attempted attack.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.2-3">A data packet received on the original path that increases the
 maximum received packet number will cause the endpoint to move back
 to that path. Therefore, eliciting packets on this path increases the
 likelihood that the attack is unsuccessful. Note however that, unlike QUIC,
 DTLS has no "non-probing" packets so this would require application specific
-mechanisms.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
-<p id="section-6.1-4"><a href="#fig-off-path" class="xref">Figure 2</a> illustrates the case where a receiver receives a
+mechanisms.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.2-4"><a href="#fig-off-path" class="xref">Figure 2</a> illustrates the case where a receiver receives a
 packet with a new source IP address and/or new port number. In order
 to determine whether this path change was not triggered
 by an off-path attacker, the receiver will send a RRC message of type
-<code>path_challenge</code> (1) on the old path.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<code>path_challenge</code> (1) on the old path.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <span id="name-off-path-packet-forwarding-"></span><div id="fig-off-path">
 <figure id="figure-2">
-          <div id="section-6.1-5.1">
-            <div class="alignCenter art-svg artwork" id="section-6.1-5.1.1">
+          <div id="section-6.2-5.1">
+            <div class="alignCenter art-svg artwork" id="section-6.2-5.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="368" width="256" viewBox="0 0 256 368" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
                 <path d="M 64,80 L 64,176" fill="none" stroke="black"></path>
                 <path d="M 64,208 L 64,304" fill="none" stroke="black"></path>
@@ -1438,23 +1464,23 @@ by an off-path attacker, the receiver will send a RRC message of type
                   <text x="64" y="196">Attacker?</text>
                   <text x="156" y="308">Sender</text>
                 </g>
-              </svg><a href="#section-6.1-5.1.1" class="pilcrow">¶</a>
+              </svg><a href="#section-6.2-5.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-off-path-packet-forwarding-" class="selfRef">Off-Path Packet Forwarding Scenario</a>
           </figcaption></figure>
 </div>
-<p id="section-6.1-6">Three cases need to be considered:<a href="#section-6.1-6" class="pilcrow">¶</a></p>
-<p id="section-6.1-7">Case 1: The old path is dead (e.g., due to a NAT rebinding), which leads to a
-timeout of (1).<a href="#section-6.1-7" class="pilcrow">¶</a></p>
-<p id="section-6.1-8">As shown in <a href="#fig-old-path-dead" class="xref">Figure 3</a>, a <code>path_challenge</code> (2) needs to be sent on
+<p id="section-6.2-6">Three cases need to be considered:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.2-7">Case 1: The old path is dead (e.g., due to a NAT rebinding), which leads to a
+timeout of (1).<a href="#section-6.2-7" class="pilcrow">¶</a></p>
+<p id="section-6.2-8">As shown in <a href="#fig-old-path-dead" class="xref">Figure 3</a>, a <code>path_challenge</code> (2) needs to be sent on
 the new path.  If the sender replies with a <code>path_response</code> on the new path
-(3), the switch to the new path is considered legitimate.<a href="#section-6.1-8" class="pilcrow">¶</a></p>
+(3), the switch to the new path is considered legitimate.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-dead"></span><div id="fig-old-path-dead">
 <figure id="figure-3">
-          <div id="section-6.1-9.1">
-            <div class="alignCenter art-svg artwork" id="section-6.1-9.1.1">
+          <div id="section-6.2-9.1">
+            <div class="alignCenter art-svg artwork" id="section-6.2-9.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="368" width="384" viewBox="0 0 384 368" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
                 <path d="M 80,64 L 80,112" fill="none" stroke="black"></path>
                 <path d="M 80,144 L 80,320" fill="none" stroke="black"></path>
@@ -1523,23 +1549,23 @@ the new path.  If the sender replies with a <code>path_response</code> on the ne
                   <text x="188" y="308">Sender</text>
                   <text x="260" y="308">.....'</text>
                 </g>
-              </svg><a href="#section-6.1-9.1.1" class="pilcrow">¶</a>
+              </svg><a href="#section-6.2-9.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-old-path-is-dead" class="selfRef">Old path is dead</a>
           </figcaption></figure>
 </div>
-<p id="section-6.1-10">Case 2: The old path is alive but not preferred.<a href="#section-6.1-10" class="pilcrow">¶</a></p>
-<p id="section-6.1-11">This case is shown in <a href="#fig-old-path-not-preferred" class="xref">Figure 4</a> whereby the sender
+<p id="section-6.2-10">Case 2: The old path is alive but not preferred.<a href="#section-6.2-10" class="pilcrow">¶</a></p>
+<p id="section-6.2-11">This case is shown in <a href="#fig-old-path-not-preferred" class="xref">Figure 4</a> whereby the sender
 replies with a <code>path_drop</code> message (2) on the old path.  This triggers
 the receiver to send a <code>path_challenge</code> (3) on the new path. The sender
 will reply with a <code>path_response</code> (4) on the new path, thus providing
-confirmation for the path migration.<a href="#section-6.1-11" class="pilcrow">¶</a></p>
+confirmation for the path migration.<a href="#section-6.2-11" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-not-preferred"></span><div id="fig-old-path-not-preferred">
 <figure id="figure-4">
-          <div id="section-6.1-12.1">
-            <div class="alignCenter art-svg artwork" id="section-6.1-12.1.1">
+          <div id="section-6.2-12.1">
+            <div class="alignCenter art-svg artwork" id="section-6.2-12.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="352" width="424" viewBox="0 0 424 352" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
                 <path d="M 104,64 L 104,112" fill="none" stroke="black"></path>
                 <path d="M 104,144 L 104,320" fill="none" stroke="black"></path>
@@ -1618,23 +1644,23 @@ confirmation for the path migration.<a href="#section-6.1-11" class="pilcrow">¶
                   <text x="348" y="260">drop</text>
                   <text x="212" y="308">Sender</text>
                 </g>
-              </svg><a href="#section-6.1-12.1.1" class="pilcrow">¶</a>
+              </svg><a href="#section-6.2-12.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-old-path-is-not-preferred" class="selfRef">Old path is not preferred</a>
           </figcaption></figure>
 </div>
-<p id="section-6.1-13">Case 3: The old path is alive and preferred.<a href="#section-6.1-13" class="pilcrow">¶</a></p>
-<p id="section-6.1-14">This is most likely the result of an off-path attacker trying to place itself
+<p id="section-6.2-13">Case 3: The old path is alive and preferred.<a href="#section-6.2-13" class="pilcrow">¶</a></p>
+<p id="section-6.2-14">This is most likely the result of an off-path attacker trying to place itself
 on path.  The receiver sends a <code>path_challenge</code> on the old path and the sender
 replies with a <code>path_response</code> (2) on the old path. The interaction is shown in
 <a href="#fig-old-path-preferred" class="xref">Figure 5</a>. This results in the connection not being migrated
-to the new path, thus thwarting the attack.<a href="#section-6.1-14" class="pilcrow">¶</a></p>
+to the new path, thus thwarting the attack.<a href="#section-6.2-14" class="pilcrow">¶</a></p>
 <span id="name-old-path-is-preferred"></span><div id="fig-old-path-preferred">
 <figure id="figure-5">
-          <div id="section-6.1-15.1">
-            <div class="alignCenter art-svg artwork" id="section-6.1-15.1.1">
+          <div id="section-6.2-15.1">
+            <div class="alignCenter art-svg artwork" id="section-6.2-15.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="384" width="352" viewBox="0 0 352 384" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px">
                 <path d="M 64,80 L 64,176" fill="none" stroke="black"></path>
                 <path d="M 64,224 L 64,320" fill="none" stroke="black"></path>
@@ -1693,26 +1719,26 @@ to the new path, thus thwarting the attack.<a href="#section-6.1-14" class="pilc
                   <text x="188" y="276">response</text>
                   <text x="156" y="324">Sender</text>
                 </g>
-              </svg><a href="#section-6.1-15.1.1" class="pilcrow">¶</a>
+              </svg><a href="#section-6.2-15.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-old-path-is-preferred" class="selfRef">Old path is preferred</a>
           </figcaption></figure>
 </div>
-<p id="section-6.1-16">Note that this defense is imperfect, but this is not considered a serious
+<p id="section-6.2-16">Note that this defense is imperfect, but this is not considered a serious
 problem. If the path via the attack is reliably faster than the
 old path despite multiple attempts to use that old path, it
 is not possible to distinguish between an attack and an improvement
-in routing.<a href="#section-6.1-16" class="pilcrow">¶</a></p>
-<p id="section-6.1-17">An endpoint could also use heuristics to improve detection of this
+in routing.<a href="#section-6.2-16" class="pilcrow">¶</a></p>
+<p id="section-6.2-17">An endpoint could also use heuristics to improve detection of this
 style of attack. For instance, NAT rebinding is improbable if
 packets were recently received on the old path; similarly, rebinding
 is rare on IPv6 paths. Endpoints can also look for duplicated
 packets. Conversely, a change in connection ID is more likely to
 indicate an intentional migration rather than an attack. Note that
 changes in connection IDs are supported in DTLS 1.3 but not in
-DTLS 1.2.<a href="#section-6.1-17" class="pilcrow">¶</a></p>
+DTLS 1.2.<a href="#section-6.2-17" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1727,7 +1753,7 @@ any buffered application data, or limit the data sent to the unvalidated
 address to the anti-amplification limit.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <p id="section-7-2">It then initiates the return routability check that proceeds as described
 either in <a href="#enhanced" class="xref">Section 7.2</a> or <a href="#regular" class="xref">Section 7.1</a>, depending on whether the off-path
-attacker scenario described in <a href="#off-path" class="xref">Section 6.1</a> is to be taken into account or not.<a href="#section-7-2" class="pilcrow">¶</a></p>
+attacker scenario described in <a href="#off-path" class="xref">Section 6.2</a> is to be taken into account or not.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">(The decision on what strategy to choose depends mainly on the threat model, but
 may also be influenced by other considerations.  Examples of impacting factors
 include: the need to minimise implementation complexity, privacy concerns, the

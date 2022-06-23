@@ -70,7 +70,8 @@ Table of Contents
    4.  Return Routability Check Message Types
    5.  RRC and CID Interplay
    6.  Attacker Model
-     6.1.  Off-Path Packet Forwarding
+     6.1.  On-Path Attacker
+     6.2.  Off-Path Packet Forwarding
    7.  Path Validation Procedure
      7.1.  Basic
      7.2.  Enhanced
@@ -227,12 +228,33 @@ Table of Contents
 
 6.  Attacker Model
 
-   RRC is not designed to counter on-path attackers.  These can never be
-   distinguished from, for example, a genuine network device.  However,
-   RRC can withstand off-path attackers of the type described below when
-   the enhanced path validation algorithm (Section 7.2) is used.
+   RRC is not designed to counter man-in-the-middle attackers.  These
+   can never be distinguished from a genuine network device.  Instead,
+   the types of attacker RRC is designed to withstand are:
 
-6.1.  Off-Path Packet Forwarding
+   *  On-path attackers that try to trigger a connection migration
+      (Section 6.1);
+
+   *  Off-path attackers that try to put themselves on-path
+      (Section 6.2) -- provided that the enhanced path validation
+      algorithm is used, see Section 7.2.
+
+6.1.  On-Path Attacker
+
+   An on-path attacker could make a copy of a packet, replace the source
+   address with a spoofed one and forward it to the original
+   destination.  If the spoofed packet arrives before the original it
+   will be regarded as a migration, while the original packet will be
+   flagged as a duplicate and dropped.
+
+   The subsequent path validation (Section 7) will fail because the
+   entity at the (spoofed) source address does not have the
+   cryptographic keys needed to decode the path_challenge message that
+   is sent to it, and therefore to produce the corresponding
+   path_response.  Since the path validation fails, the address binding
+   is not altered, thus thwarting the attack.
+
+6.2.  Off-Path Packet Forwarding
 
    An off-path attacker that can observe packets might forward copies of
    genuine packets to endpoints over a different path.  If the copied
@@ -403,7 +425,7 @@ Table of Contents
 
    It then initiates the return routability check that proceeds as
    described either in Section 7.2 or Section 7.1, depending on whether
-   the off-path attacker scenario described in Section 6.1 is to be
+   the off-path attacker scenario described in Section 6.2 is to be
    taken into account or not.
 
    (The decision on what strategy to choose depends mainly on the threat
